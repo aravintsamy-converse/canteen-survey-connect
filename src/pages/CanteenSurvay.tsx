@@ -1,7 +1,23 @@
+import { useState } from 'react'
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 import { Link } from 'react-router-dom'
+import LocationModal from '../component/LocationModal'
 
 const CanteenSurvay = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const handleOpenModal = (e: React.MouseEvent) => {
+    e.preventDefault() // Prevent Link navigation
+    setIsModalOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+  }
+
+  const handleSubmitLocation = (location: string) => {
+    console.log('New location submitted:', location)
+    // Add logic to handle the new location (e.g., update state, make API call)
+  }
   return (
     <div className="w-full  xl:w-[96%] mx-1 p-4">
     {/* Location Information */}
@@ -11,15 +27,19 @@ const CanteenSurvay = () => {
       <p>16680 BALANCE COVE</p>
       <p>Land O Lakes, FL 34638</p>
       <p >Snacks</p>
-      <Link to="/" className="text-[#c1f001] underline hover:text-[#005599]">
-        Not at this location?
-      </Link>
+      <Link
+          to="/"
+          onClick={handleOpenModal}
+          className="text-[#c1f001] underline hover:text-[#005599]"
+        >
+          Not at this location?
+        </Link>
     </div>
 
     <div className="mt-8">
       <div className="bg-white rounded-[11px] overflow-hidden border border-black">
         <Link
-          to="/machine-problem"
+          to="/machine-problems"
           className="w-full px-3 py-2 text-left flex justify-between items-center link-item"
         >
           <span className="font-[700] text-[16px]">Machine Problem?</span>
@@ -27,7 +47,7 @@ const CanteenSurvay = () => {
         </Link>
         <div className="border-t border-black"></div>
         <Link
-          to="/refund"
+          to="/refunds"
           className="w-full px-3 py-2 text-left flex justify-between items-center link-item"
         >
           <span className="font-[700] text-[16px]">Need a Refund?</span>
@@ -61,6 +81,11 @@ const CanteenSurvay = () => {
           </div>
         </div>
       </footer>
+      <LocationModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSubmit={handleSubmitLocation}
+      />
   </div>
 
   )
