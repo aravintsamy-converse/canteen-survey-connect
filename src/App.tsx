@@ -1,9 +1,17 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import CanteenSurvay from './pages/CanteenSurvay'
+import MachineProblem from './pages/MachineProblem'
+import Refund from './pages/Refund'
 function App() {
 
   return (
-    <>
-     <h1 className='text-3xl bg-[#ff0000] font-bold underline'>aravint</h1>
-    </>
+    <Router>
+    <Routes>
+      <Route path="/" element={<CanteenSurvay />} />
+      <Route path="/machine-problem" element={<MachineProblem />} />
+      <Route path="/refund" element={<Refund />} />
+    </Routes>
+  </Router>
   )
 }
 

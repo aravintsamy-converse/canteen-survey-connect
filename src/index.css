@@ -1,1 +1,15 @@
 @import "tailwindcss";
+
+.link-item {
+  color: black;
+  text-shadow: 0 0 0 #000;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.link-item:hover {
+  background-color: #BBDB3B;
+  color: black;
+}
+.link-item:active {
+  background-color: #008000;
+  color: white;
+}
