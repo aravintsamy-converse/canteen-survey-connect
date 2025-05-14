@@ -15,7 +15,6 @@ const MachineProblem = () => {
       machineIsDamaged: false
     }
   });
-  console.log("🚀 ~ MachineProblem ~ formData:", formData)
 
   const [errors, setErrors] = useState({
     name: '',
@@ -159,6 +158,7 @@ const MachineProblem = () => {
                   key={key}
                   className={`p-3 flex items-center   link-item border-[#000] h-11 ${index !== Object.entries(formData.issues).length - 1 ? 'border-b' : ''
                     }`}
+                  onClick={() => handleIssueChange(key as keyof typeof formData.issues)}
                 >
                   <input
                     type="checkbox"
