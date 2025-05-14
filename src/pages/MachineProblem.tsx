@@ -165,7 +165,7 @@ const MachineProblem = () => {
                     id={key}
                     checked={value}
                     onChange={() => handleIssueChange(key as keyof typeof formData.issues)}
-                    className="mr-3 h-5 w-5"
+                    className="mr-3 h-5 w-5 custom-checkbox"
                   />
                   <label htmlFor={key} className="select-none  text-black text-[16px] font-[700]" style={{ textShadow: '0 0 0 #444444' }}>{issueText}</label>
                 </div>
