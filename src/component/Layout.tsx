@@ -31,7 +31,6 @@ const Layout: React.FC = () => {
         </div>
       </header>
 
-      {/* Route-specific Content */}
       <main className="flex-grow bg-[#4D4D4D] text-white">
         <Outlet />
       </main>

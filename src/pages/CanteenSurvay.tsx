@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import LocationModal from '../component/LocationModal'
 import { FaChevronCircleRight } from 'react-icons/fa'
@@ -7,7 +6,7 @@ import { FaChevronCircleRight } from 'react-icons/fa'
 const CanteenSurvay = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const handleOpenModal = (e: React.MouseEvent) => {
-    e.preventDefault() // Prevent Link navigation
+    e.preventDefault()
     setIsModalOpen(true)
   }
 
@@ -17,11 +16,10 @@ const CanteenSurvay = () => {
 
   const handleSubmitLocation = (location: string) => {
     console.log('New location submitted:', location)
-    // Add logic to handle the new location (e.g., update state, make API call)
+    // Add logic to handle the new location
   }
   return (
     <div className="w-full  xl:w-[96%] mx-1 p-4">
-    {/* Location Information */}
     <div className="mb-6">
       <h1 className="text-[16px] font-[700]">ENCOMPASS BRKSVILL 941562</h1>
       <p>16680 BALANCE COVE</p>
