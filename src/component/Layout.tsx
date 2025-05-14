@@ -21,10 +21,10 @@ const Layout: React.FC = () => {
               <Link to="/" className=" text-black hover:text-[#005599] flex items-center">
                 <MdHome className="text-[24px] bg-[#4D4D4D] p-[2px] rounded-full text-white" />
                 <span className="text-[12.5px] font-[700] text-[#4D4D4D] ml-2" style={{ textShadow: '0 0 0 #000' }}>
-                Home
-              </span>
+                  Home
+                </span>
               </Link>
-             
+
             </div>
           )}
 
@@ -35,23 +35,23 @@ const Layout: React.FC = () => {
         <Outlet />
       </main>
       {/* Common Footer */}
-      {/* <footer className="mt-0 bg-[#4D4D4D] p-2 border-t border-black">
+      <footer className="mt-0 bg-[#4D4D4D] p-2 border-t border-black">
         <div className="container mx-1">
-          <div className="text-[16px] font-[400] text-white underline">
+          <div className="flex gap-x-1.5 items-center text-[16px] font-[400] text-white underline">
             <Link to="/" className="hover:underline">
               Privacy Policy
-            </Link>{" "}
-            |{" "}
+            </Link>
+            <div className="border-l border-white h-4"></div>
             <Link to="/" className="hover:underline">
               Terms of Use
-            </Link>{" "}
-            |{" "}
+            </Link>
+            <div className="border-l border-white h-4"></div>
             <Link to="/" className="hover:underline">
               Privacy Request
             </Link>
           </div>
         </div>
-      </footer> */}
+      </footer>
     </div>
   )
 }

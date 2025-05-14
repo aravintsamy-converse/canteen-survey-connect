@@ -15,6 +15,7 @@ const MachineProblem = () => {
       machineIsDamaged: false
     }
   });
+  console.log("🚀 ~ MachineProblem ~ formData:", formData)
 
   const [errors, setErrors] = useState({
     name: '',
@@ -140,10 +141,10 @@ const MachineProblem = () => {
   return (
     <div className="w-full xl:w-[96%] mx-1 p-3 min-h-screen">
       <h1 className="text-[22px] font-[700] text-white">Machine Problem? </h1>
-      <div className=" mx-auto">
+      <div className="pt-[52px] mx-auto">
         <div className="mb-6">
-          <p className="font-semibold mb-2">Choose all issues that apply:</p>
-          <div className="border rounded">
+          <p className="font-[400] text-[16px] mb-0" style={{ textShadow: '0 0 0 #444444' }}>Choose all issues that apply:</p>
+          <div className="border border-[#000] bg-white rounded-[12px] w-full md:w-[78%]">
             {Object.entries(formData.issues).map(([key, value], index) => {
               const issueText = key
                 .replace(/([A-Z])/g, ' $1')
@@ -156,7 +157,7 @@ const MachineProblem = () => {
               return (
                 <div
                   key={key}
-                  className={`p-3 flex items-center text-white text-shadow-lg ${index !== Object.entries(formData.issues).length - 1 ? 'border-b' : ''
+                  className={`p-3 flex items-center link-item border-[#000] h-11 ${index !== Object.entries(formData.issues).length - 1 ? 'border-b' : ''
                     }`}
                 >
                   <input
@@ -166,7 +167,7 @@ const MachineProblem = () => {
                     onChange={() => handleIssueChange(key as keyof typeof formData.issues)}
                     className="mr-3 h-5 w-5"
                   />
-                  <label htmlFor={key} className="select-none">{issueText}</label>
+                  <label htmlFor={key} className="select-none  text-black text-[16px] font-[700]" style={{ textShadow: '0 0 0 #444444' }}>{issueText}</label>
                 </div>
               );
             })}
@@ -177,7 +178,7 @@ const MachineProblem = () => {
         </div>
 
         <div className="mb-6">
-          <label htmlFor="comments" className="block mb-1">Comments:</label>
+          <label htmlFor="comments" className="block mb-1 text-[16px] font-[400]" style={{ textShadow: '0 0 0 #444444' }}>Comments:</label>
           <textarea
             id="comments"
             name="comments"
@@ -185,18 +186,18 @@ const MachineProblem = () => {
             onChange={handleInputChange}
             rows={6}
             maxLength={1000}
-            className="w-full p-3 bg-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
           />
-          <div className="text-right text-sm mt-1">
+          <div className="text-left text-[16px] mt-1" style={{ textShadow: '0 0 0 #444444' }}>
             {commentCharsRemaining} Characters Remaining
           </div>
         </div>
 
         <div className="mb-6">
-          <p className="mb-2">If you would like to receive a confirmation email please provide contact information below:</p>
+          <p className="mb-2 text-[16px] font-[700]" style={{ textShadow: '0 0 0 #444444' }}>If you would like to receive a confirmation email please provide contact information below:</p>
 
           <div className="mb-4">
-            <label htmlFor="name" className="block mb-1">
+            <label htmlFor="name" className="block mb-1 text-[16px] font-[400]" style={{ textShadow: '0 0 0 #444444' }}>
               Name: {errors.name && <span className="text-red-500">{errors.name}</span>}
             </label>
             <input
@@ -207,15 +208,15 @@ const MachineProblem = () => {
               onChange={handleInputChange}
               onBlur={handleBlur}
               maxLength={50}
-              className="w-full p-2 bg-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
             />
-            <div className="text-right text-sm mt-1">
+            <div className="text-left text-[16px] mt-1 font-[400]" style={{ textShadow: '0 0 0 #444444' }}>
               {nameCharsRemaining} Characters Remaining
             </div>
           </div>
 
           <div className="mb-4">
-            <label htmlFor="email" className="block mb-1">
+            <label htmlFor="email" className="block mb-1 text-[16px] font-[400]" style={{ textShadow: '0 0 0 #444444' }}>
               Email Address: {errors.email && <span className="text-red-500">{errors.email}</span>}
             </label>
             <input
@@ -225,12 +226,12 @@ const MachineProblem = () => {
               value={formData.email}
               onChange={handleInputChange}
               onBlur={handleBlur}
-              className="w-full p-2 bg-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="phone" className="block mb-1">
+            <label htmlFor="phone" className="block mb-1 text-[16px] font-[400]" style={{ textShadow: '0 0 0 #444444' }}>
               Phone (e.g. 9998887777 or 19998887777):
             </label>
             <input
@@ -239,23 +240,23 @@ const MachineProblem = () => {
               name="phone"
               value={formData.phone}
               onChange={handleInputChange}
-              className="w-full p-2 bg-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
             />
           </div>
         </div>
-
-        <div className="mt-6 flex justify-end">
+        <div className="mt-8 text-sm text-white text-[14px] font-[400] pl-8" style={{ textShadow: '0 0 0 #444444' }}>
+          SIID: 11900606 - JDEID: 0
+        </div>
+        <div className="mt-4 mb-4 flex justify-end">
           <button
             onClick={handleSubmit}
-            className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded"
+            className="bg-[#FFFFFF] text-black  hover:bg-[#c1f001] font-[700] rounded-[12px] px-3 py-2 text-[18px] border border-[#000] transition duration-300 ease-in-out focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
           >
             Submit
           </button>
         </div>
 
-        <div className="mt-8 text-sm text-gray-400">
-          SIID: 11900606 - JDEID: 0
-        </div>
+
       </div>
     </div>
   )

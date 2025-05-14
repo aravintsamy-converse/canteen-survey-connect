@@ -63,23 +63,6 @@ const CanteenSurvay = () => {
       </div>
     </div>
 
-    <footer className="mt-8 ">
-        <div className="container mx-1">
-          <div className="text-[16px] font-[400] text-white underline">
-            <Link to="/" className="hover:underline">
-              Privacy Policy
-            </Link>{" "}
-            |{" "}
-            <Link to="/" className="hover:underline">
-              Terms of Use
-            </Link>{" "}
-            |{" "}
-            <Link to="/" className="hover:underline">
-              Privacy Request
-            </Link>
-          </div>
-        </div>
-      </footer>
       <LocationModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
