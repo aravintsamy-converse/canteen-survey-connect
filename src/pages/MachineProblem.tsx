@@ -157,7 +157,7 @@ const MachineProblem = () => {
               return (
                 <div
                   key={key}
-                  className={`p-3 flex items-center link-item border-[#000] h-11 ${index !== Object.entries(formData.issues).length - 1 ? 'border-b' : ''
+                  className={`p-3 flex items-center   link-item border-[#000] h-11 ${index !== Object.entries(formData.issues).length - 1 ? 'border-b' : ''
                     }`}
                 >
                   <input
@@ -177,8 +177,8 @@ const MachineProblem = () => {
           )}
         </div>
 
-        <div className="mb-6">
-          <label htmlFor="comments" className="block mb-1 text-[16px] font-[400]" style={{ textShadow: '0 0 0 #444444' }}>Comments:</label>
+        <div className="mb-3">
+          <label htmlFor="comments" className="block   text-[16px] font-[400] mb-4" style={{ textShadow: '0 0 0 #444444' }}>Comments:</label>
           <textarea
             id="comments"
             name="comments"
@@ -186,9 +186,9 @@ const MachineProblem = () => {
             onChange={handleInputChange}
             rows={6}
             maxLength={1000}
-            className="w-full p-3 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
+            className="w-full p-3 ml-[2px] h-[166px] border  border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
           />
-          <div className="text-left text-[16px] mt-1" style={{ textShadow: '0 0 0 #444444' }}>
+          <div className="text-left text-[16px]" style={{ textShadow: '0 0 0 #444444' }}>
             {commentCharsRemaining} Characters Remaining
           </div>
         </div>
@@ -250,7 +250,7 @@ const MachineProblem = () => {
         <div className="mt-4 mb-4 flex justify-end">
           <button
             onClick={handleSubmit}
-            className="bg-[#FFFFFF] text-black  hover:bg-[#c1f001] font-[700] rounded-[12px] px-3 py-2 text-[18px] border border-[#000] transition duration-300 ease-in-out focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
+            className="bg-[#FFFFFF] text-black  hover:bg-[#c1f001] font-[700] rounded-[16px] px-3 py-2 text-[18px] border border-[#000] transition duration-300 ease-in-out focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
           >
             Submit
           </button>
