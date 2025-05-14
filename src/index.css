@@ -13,3 +13,37 @@
   background-color: #008000;
   color: white;
 }
+
+@keyframes slideInWithZoom {
+  0% {
+    transform: translateX(100%) scale(0.8);
+    opacity: 0;
+  }
+  /* 100% {
+    transform: translateX(100%) scale(0.8);
+    opacity: 1;
+  } */
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutWithZoom {
+  0% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%) scale(0.8);
+    opacity: 0;
+  }
+}
+
+.animate-slide-in-zoom {
+  animation: slideInWithZoom 0.3s ease-out forwards;
+}
+
+.animate-slide-out-zoom {
+  animation: slideOutWithZoom 0.3s ease-in forwards;
+}

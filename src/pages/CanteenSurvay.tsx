@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import LocationModal from '../component/LocationModal'
+import { FaChevronCircleRight } from 'react-icons/fa'
 
 const CanteenSurvay = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -43,7 +44,7 @@ const CanteenSurvay = () => {
           className="w-full px-3 py-2 text-left flex justify-between items-center link-item"
         >
           <span className="font-[700] text-[16px]">Machine Problem?</span>
-          <MdOutlineKeyboardArrowRight className="text-[28px] bg-[#4D4D4D] rounded-full text-white" />
+          <FaChevronCircleRight className='text-[22px] text-[#4D4D4D] '/>
         </Link>
         <div className="border-t border-black"></div>
         <Link
@@ -51,7 +52,7 @@ const CanteenSurvay = () => {
           className="w-full px-3 py-2 text-left flex justify-between items-center link-item"
         >
           <span className="font-[700] text-[16px]">Need a Refund?</span>
-          <MdOutlineKeyboardArrowRight className="text-[28px] bg-[#4D4D4D] rounded-full text-white" />
+          <FaChevronCircleRight className='text-[22px] text-[#4D4D4D] '/>
         </Link>
         <div className="border-t border-black"></div>
         <Link
@@ -59,7 +60,7 @@ const CanteenSurvay = () => {
           className="w-full px-3 py-2 text-left flex justify-between items-center link-item"
         >
           <span className="font-[700] text-[16px]">Nutrition Information</span>
-          <MdOutlineKeyboardArrowRight className="text-[28px] bg-[#4D4D4D] rounded-full text-white" />
+          <FaChevronCircleRight className='text-[22px] text-[#4D4D4D] '/>
         </Link>
       </div>
     </div>

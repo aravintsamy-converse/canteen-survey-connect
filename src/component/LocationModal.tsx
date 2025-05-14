@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 interface LocationModalProps {
   isOpen: boolean
@@ -8,8 +8,23 @@ interface LocationModalProps {
 
 const LocationModal: React.FC<LocationModalProps> = ({ isOpen, onClose, onSubmit }) => {
   const [location, setLocation] = useState('')
+  const [isAnimating, setIsAnimating] = useState(false)
+  const [shouldRender, setShouldRender] = useState(isOpen)
 
-  if (!isOpen) return null
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true)
+      setIsAnimating(true)
+    } else if (shouldRender) {
+      setIsAnimating(false)
+    }
+  }, [isOpen])
+
+  const handleAnimationEnd = () => {
+    if (!isAnimating) {
+      setShouldRender(false)
+    }
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -18,11 +33,18 @@ const LocationModal: React.FC<LocationModalProps> = ({ isOpen, onClose, onSubmit
     onClose()
   }
 
+  if (!shouldRender) return null
+
   return (
-    <div className="fixed inset-0 backdrop-invert-25 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-4 w-full max-w-sm">
-        <div className="flex justify-between items-center border-b pb-2">
-          <h2 className="text-sm font-medium text-gray-700">
+    <div className="fixed inset-0 backdrop-brightness-60 flex items-center justify-center z-50">
+      <div
+        className={`bg-[#808080] rounded-lg p-4 w-full max-w-sm ${
+          isAnimating ? 'animate-slide-in-zoom' : 'animate-slide-out-zoom'
+        }`}
+        onAnimationEnd={handleAnimationEnd}
+      >
+        <div className="flex justify-between items-center  pb-2">
+          <h2 className="text-[16px] font-medium text-white">
             Please provide correct location details.
           </h2>
           <button
@@ -37,7 +59,7 @@ const LocationModal: React.FC<LocationModalProps> = ({ isOpen, onClose, onSubmit
             <textarea
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className="w-full p-2 border border-gray-300 text-black rounded-md"
+              className="w-full p-2 border border-gray-300 bg-white text-black rounded-md"
               placeholder="Enter location"
             />
           </div>
