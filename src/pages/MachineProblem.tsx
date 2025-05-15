@@ -262,7 +262,7 @@ const MachineProblem = () => {
               Phone (e.g. 9998887777 or 19998887777):
             </label>
             <input
-              type="text"
+              type="number"
               id="phone"
               name="phone"
               value={formData.phone}
