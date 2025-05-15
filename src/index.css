@@ -93,3 +93,16 @@ body {
   font-size: 24px;
   line-height: 18px; /* Center the checkmark */
 }
+
+@keyframes spin-custom {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-custom {
+  animation: spin-custom 1s linear infinite;
+}
