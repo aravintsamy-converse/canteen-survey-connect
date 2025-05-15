@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import { useGuid } from '../GuidContext';
+import { useEqpId } from '../EquipmentIdContext';
 import { Navigate } from "react-router-dom";
 
 const MachineProblem = () => {
-  const { guid } = useGuid();
+  const { eqpId } = useEqpId();
    
-  // Check if guid is null, undefined, or empty
-  if (!guid || guid === '') {
+  // Check if eqpId is null, undefined, or empty
+  if (!eqpId || eqpId === '') {
     return <Navigate to="/survey/not-found" replace />;
   }
 
   const [formData, setFormData] = useState({
-    eqpId: guid,
+    eqpId: eqpId,
     name: '',
     email: '',
     phone: '',
@@ -143,7 +143,7 @@ const MachineProblem = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log('Form submitted:', formData, 'eqpId', guid);
+      console.log('Form submitted:', formData, 'eqpId', eqpId);
       alert('Form submitted successfully!');
     }
   };

@@ -5,29 +5,28 @@ import MachineProblem from './pages/MachineProblem';
 import Refund from './pages/Refund';
 import PageNotFound from './pages/PageNotFound';
 import Layout from './component/Layout';
-import { GuidProvider, useGuid } from './GuidContext';
+import { EquipmentIdProvider, useEqpId } from './EquipmentIdContext';
 
 // Component to extract GUID and set it in context
 const GuidExtractor: React.FC = () => {
-  const { guid } = useParams<{ guid: string }>();
-  const { setGuid } = useGuid();
+  const { id } = useParams<{ id: string }>(); // Changed from equpmentId to guid
+  const { setEqpId } = useEqpId();
 
   React.useEffect(() => {
-    if (guid) {
-      setGuid(guid);
+    if (id) {
+      setEqpId(id);
     }
-  }, [guid, setGuid]);
+  }, [id, setEqpId]);
 
   return <CanteenSurvay />;
 };
-
 function App() {
   return (
-    <GuidProvider>
+    <EquipmentIdProvider>
       <Router>
         <Routes>
           <Route element={<Layout />}>
-            <Route path="/survey/home/:guid" element={<GuidExtractor />} />
+            <Route path="/survey/home/:id" element={<GuidExtractor />} />
             <Route path="/survey/machine-problem" element={<MachineProblem />} />
             <Route path="/survey/need-refund" element={<Refund />} />
             <Route path="/" element={<Navigate to="/survey/home" replace />} />
@@ -35,7 +34,7 @@ function App() {
           </Route>
         </Routes>
       </Router>
-    </GuidProvider>
+    </EquipmentIdProvider>
   );
 }
 

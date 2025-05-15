@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import LocationModal from '../component/LocationModal';
 import { FaChevronCircleRight } from 'react-icons/fa';
-import { useGuid } from '../GuidContext';
+import { useEqpId } from '../EquipmentIdContext';
 
 const CanteenSurvay = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { guid } = useGuid();
-  console.log("🚀 ~ CanteenSurvay ~ guid:", guid)
+  const { eqpId } = useEqpId();
+  console.log("🚀 ~ CanteenSurvay ~ guid:", eqpId)
 
   const handleOpenModal = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -32,7 +32,7 @@ const CanteenSurvay = () => {
         <p>Land O Lakes, FL 34638</p>
         <p className="text-[16px] font-[700]">Snacks</p>
         <Link
-          to={`/survey/home/${guid}`}
+          to={`/survey/home/${eqpId}`}
           onClick={handleOpenModal}
           className="text-[#c1f001] text-[16px] font-[700] underline hover:text-[#005599]"
         >
