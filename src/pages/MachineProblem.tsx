@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const MachineProblem = () => {
+  const { guid } = useParams<{ guid: string }>();
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -145,14 +148,24 @@ const MachineProblem = () => {
           <p className="font-[400] text-[16px] mb-0" style={{ textShadow: '0 0 0 #444444' }}>Choose all issues that apply:</p>
           <div className="border border-[#000] bg-white rounded-[12px] w-full md:w-[78%]">
             {Object.entries(formData.issues).map(([key, value], index) => {
-              const issueText = key
-                .replace(/([A-Z])/g, ' $1')
-                .replace(/^./, str => str.toUpperCase())
-                .replace(/Wont/g, 'Won\'t')
-                .replace(/To Be/g, 'to be')
-                .replace(/Is Not /g, 'is not ')
-                .replace(/Is /g, 'is ');
-
+              const issueText = (() => {
+                switch (key) {
+                  case 'needsToBeFilled':
+                    return 'Needs to be filled';
+                  case 'machineIsNotWorking':
+                    return 'Machine is not working';
+                  case 'wontAcceptCreditCard':
+                    return 'Won\'t accept credit card';
+                  case 'machineIsDamaged':
+                    return 'Machine is damaged';
+                  case 'needsCleaning':
+                    return 'Needs cleaning';
+                  case 'notAcceptingMoney':
+                    return 'Not Accepting Money';
+                  default:
+                    return '';
+                };
+              })();
               return (
                 <div
                   key={key}
@@ -167,7 +180,14 @@ const MachineProblem = () => {
                     onChange={() => handleIssueChange(key as keyof typeof formData.issues)}
                     className="mr-3 h-5 w-5 custom-checkbox"
                   />
-                  <label htmlFor={key} className="select-none  text-black text-[16px] font-[700]" style={{ textShadow: '0 0 0 #444444' }}>{issueText}</label>
+                  <label
+                    htmlFor={key}
+                    onClick={(e) => e.stopPropagation()}
+                    className="select-none text-black text-[16px] font-[700]"
+                    style={{ textShadow: '0 0 0 #444444' }}
+                  >
+                    {issueText}
+                  </label>
                 </div>
               );
             })}
