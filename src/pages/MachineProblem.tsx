@@ -153,7 +153,7 @@ const MachineProblem = () => {
       <div className="pt-[58px] mx-auto">
         <div className="mb-6">
           <p className="font-[400] text-[16px] mb-0" style={{ textShadow: '0 0 0 #444444' }}>Choose all issues that apply:</p>
-          <div className="border border-[#000] bg-white rounded-[12px] w-full md:w-[78%]">
+          <div className="border border-[#000] bg-white overflow-hidden rounded-[12px] w-full md:w-[78%]">
             {Object.entries(formData.issues).map(([key, value], index) => {
               const issueText = (() => {
                 switch (key) {

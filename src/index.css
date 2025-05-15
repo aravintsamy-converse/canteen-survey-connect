@@ -74,7 +74,7 @@ body {
   -moz-appearance: none;
   width: 20px; /* Size of the checkbox */
   height: 20px;
-  border: 1px solid #ccc; /* Border color when unchecked */
+  border: 1px solid transparent; /* Border color when unchecked */
   border-radius: 4px;
   background-color: #e9e9e9; /* Background when unchecked */
   cursor: pointer;
@@ -82,7 +82,6 @@ body {
 
 .custom-checkbox:checked {
   background-color: #92ae1f; /* Green background when checked */
-  border-color: #c1f001; /* Match border to background */
 }
 
 .custom-checkbox:checked::after {
