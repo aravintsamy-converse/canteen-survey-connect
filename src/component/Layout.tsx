@@ -1,10 +1,11 @@
 import React from 'react';
 import { MdHome } from 'react-icons/md';
-import { Outlet, Link, useLocation, useParams } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
+import { useGuid } from '../GuidContext';
 
 const Layout: React.FC = () => {
   const location = useLocation();
-  const { guid } = useParams<{ guid: string }>();
+  const { guid } = useGuid();
 
   return (
     <div className="flex flex-col min-h-screen">

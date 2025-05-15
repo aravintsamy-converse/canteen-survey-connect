@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import LocationModal from '../component/LocationModal';
 import { FaChevronCircleRight } from 'react-icons/fa';
+import { useGuid } from '../GuidContext';
 
 const CanteenSurvay = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { guid } = useParams<{ guid: string }>();
+  const { guid } = useGuid();
+  console.log("🚀 ~ CanteenSurvay ~ guid:", guid)
 
   const handleOpenModal = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -41,7 +43,7 @@ const CanteenSurvay = () => {
       <div className="mt-6">
         <div className="bg-white rounded-[11px] overflow-hidden border border-black">
           <Link
-            to={`/survey/machine-problem/${guid}`}
+            to={`/survey/machine-problem`}
             className="w-full px-3 py-3 text-left flex justify-between items-center link-item"
           >
             <span className="font-[700] text-[16px]">Machine Problem?</span>
@@ -49,7 +51,7 @@ const CanteenSurvay = () => {
           </Link>
           <div className="border-t border-black"></div>
           <Link
-            to={`/survey/need-refund/${guid}`}
+            to={`/survey/need-refund`}
             className="w-full px-3 py-3 text-left flex justify-between items-center link-item"
           >
             <span className="font-[700] text-[16px]">Need a Refund?</span>
@@ -57,7 +59,7 @@ const CanteenSurvay = () => {
           </Link>
           <div className="border-t border-black"></div>
           <Link
-            to={`/survey/nutrition/${guid}`}
+            to={`/survey/nutrition`}
             className="w-full px-3 py-3 text-left flex justify-between items-center link-item"
           >
             <span className="font-[700] text-[16px]">Nutrition Information</span>

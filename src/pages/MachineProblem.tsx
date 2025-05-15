@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useGuid } from '../GuidContext';
+import { Navigate } from "react-router-dom";
 
 const MachineProblem = () => {
-  const { guid } = useParams<{ guid: string }>();
+  const { guid } = useGuid();
+   
+  // Check if guid is null, undefined, or empty
+  if (!guid || guid === '') {
+    return <Navigate to="/survey/not-found" replace />;
+  }
 
   const [formData, setFormData] = useState({
+    eqpId: guid,
     name: '',
     email: '',
     phone: '',
@@ -136,7 +143,7 @@ const MachineProblem = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log('Form submitted:', formData);
+      console.log('Form submitted:', formData, 'eqpId', guid);
       alert('Form submitted successfully!');
     }
   };
