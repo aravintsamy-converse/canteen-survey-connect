@@ -1,5 +1,25 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "DejaVu Sans";
+  src: url("/fonts/dejavu-sans.book.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "DejaVu Sans";
+  src: url("/fonts/dejavu-sans.bold.ttf") format("truetype");
+  font-weight: Bold;
+  font-style: normal;
+}
+
+body {
+  font-family: "DejaVu Sans",-apple-system, BlinkMacSystemFont, "Roboto", "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: 20.8px !important;
+}
+
 .link-item {
   color: black;
   text-shadow: 0 0 0 #000;
