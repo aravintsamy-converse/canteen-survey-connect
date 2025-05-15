@@ -1,11 +1,28 @@
 import React from 'react';
 import { MdHome } from 'react-icons/md';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useEqpId } from '../EquipmentIdContext';
 
-const Layout: React.FC = () => {
+interface LayoutProps {
+  setIsNavigating: (isNavigating: boolean) => void;
+}
+
+const Layout: React.FC<LayoutProps>  = ({setIsNavigating}) => {
   const location = useLocation();
   const { eqpId } = useEqpId();
+  const navigate = useNavigate();
+
+
+  const handleNavigation = (to: string) => {
+    setIsNavigating(true);
+    navigate(to);
+    
+    // Simulate loading delay (remove this in production or adjust as needed)
+    setTimeout(() => {
+      setIsNavigating(false);
+    }, 1000);
+  };
+
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -21,8 +38,8 @@ const Layout: React.FC = () => {
           </div>
           {location.pathname !== `/survey/home/${eqpId}` && (
             <div className="flex items-center border hover:bg-[#c1f001] border-black rounded-[11px] py-1.5 px-2">
-              <Link
-                to={`/survey/home/${eqpId}`}
+              <button
+                onClick={() => handleNavigation(`/survey/home/${eqpId}`)}
                 className="text-black hover:text-[#005599] flex items-center"
               >
                 <MdHome className="text-[24px] bg-[#4D4D4D] p-[2px] rounded-full text-white" />
@@ -32,7 +49,7 @@ const Layout: React.FC = () => {
                 >
                   Home
                 </span>
-              </Link>
+              </button>
             </div>
           )}
         </div>

@@ -1,13 +1,25 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import LocationModal from '../component/LocationModal';
 import { FaChevronCircleRight } from 'react-icons/fa';
 import { useEqpId } from '../EquipmentIdContext';
+import Loader from '../component/Loader';
 
-const CanteenSurvay = () => {
+const CanteenSurvay: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsloading] = useState(false)
   const { eqpId } = useEqpId();
-  console.log("🚀 ~ CanteenSurvay ~ guid:", eqpId)
+  const navigate = useNavigate();
+
+  const handleNavigation = (to: string) => {
+    setIsloading(true);
+
+    setTimeout(() => {
+      console.log('Navigating to:', to);
+      navigate(to);
+      setIsloading(false);
+    }, 500); // Tiny delay to ensure loader renders
+  };
 
   const handleOpenModal = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -43,7 +55,11 @@ const CanteenSurvay = () => {
       <div className="mt-6">
         <div className="bg-white rounded-[11px] overflow-hidden border border-black">
           <Link
-            to={`/survey/machine-problem`}
+            to="/survey/machine-problem"
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavigation('/survey/machine-problem');
+            }}
             className="w-full px-3 py-3 text-left flex justify-between items-center link-item"
           >
             <span className="font-[700] text-[16px]">Machine Problem?</span>
@@ -67,6 +83,7 @@ const CanteenSurvay = () => {
           </Link>
         </div>
       </div>
+      {isLoading && <Loader />}
 
       <LocationModal
         isOpen={isModalOpen}
