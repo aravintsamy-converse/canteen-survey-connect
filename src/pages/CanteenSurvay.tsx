@@ -35,7 +35,7 @@ const CanteenSurvay = () => {
         </Link>
     </div>
 
-    <div className="mt-8">
+    <div className="mt-6">
       <div className="bg-white rounded-[11px] overflow-hidden border border-black">
         <Link
           to="/machine-problem"

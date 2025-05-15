@@ -8,11 +8,11 @@ const MachineProblem = () => {
     comments: '',
     issues: {
       needsToBeFilled: false,
-      notAcceptingMoney: false,
-      needsCleaning: false,
-      wontAcceptCreditCard: false,
       machineIsNotWorking: false,
-      machineIsDamaged: false
+      wontAcceptCreditCard: false,
+      machineIsDamaged: false,
+      needsCleaning: false,
+      notAcceptingMoney: false,
     }
   });
 
@@ -138,9 +138,9 @@ const MachineProblem = () => {
     }
   };
   return (
-    <div className="w-full xl:w-[96%] mx-1 p-3 min-h-screen">
+    <div className="w-full xl:w-[96%] mx-1 px-3 py-5 min-h-screen">
       <h1 className="text-[22px] font-[700] text-white">Machine Problem? </h1>
-      <div className="pt-[52px] mx-auto">
+      <div className="pt-[58px] mx-auto">
         <div className="mb-6">
           <p className="font-[400] text-[16px] mb-0" style={{ textShadow: '0 0 0 #444444' }}>Choose all issues that apply:</p>
           <div className="border border-[#000] bg-white rounded-[12px] w-full md:w-[78%]">

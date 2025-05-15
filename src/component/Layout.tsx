@@ -37,7 +37,7 @@ const Layout: React.FC = () => {
       {/* Common Footer */}
       <footer className="mt-0 bg-[#4D4D4D] p-2 ">
         <div className="container mx-1">
-          <div className="flex gap-x-1.5 items-center text-[16px] font-[400] text-white underline">
+          <div className="flex gap-x-1.5 items-center text-[13px] font-[700] text-white underline">
             <Link to="/" className="hover:underline">
               Privacy Policy
             </Link>
