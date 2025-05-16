@@ -20,7 +20,7 @@ const Layout: React.FC<LayoutProps>  = ({setIsNavigating}) => {
     // Simulate loading delay (remove this in production or adjust as needed)
     setTimeout(() => {
       setIsNavigating(false);
-    }, 1000);
+    }, 100);
   };
 
 

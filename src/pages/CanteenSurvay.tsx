@@ -18,7 +18,7 @@ const CanteenSurvay: React.FC = () => {
       console.log('Navigating to:', to);
       navigate(to);
       setIsloading(false);
-    }, 500); // Tiny delay to ensure loader renders
+    }, 100); // Tiny delay to ensure loader renders
   };
 
   const handleOpenModal = (e: React.MouseEvent) => {
@@ -68,6 +68,10 @@ const CanteenSurvay: React.FC = () => {
           <div className="border-t border-black"></div>
           <Link
             to={`/survey/need-refund`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavigation('/survey/need-refund');
+            }}
             className="w-full px-3 py-3 text-left flex justify-between items-center link-item"
           >
             <span className="font-[700] text-[16px]">Need a Refund?</span>
