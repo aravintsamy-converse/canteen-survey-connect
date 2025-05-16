@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useEqpId } from '../EquipmentIdContext';
 import { Navigate } from "react-router-dom";
 import { usePrompt } from '../hooks/usePrompt';
-import { useBeforeUnload } from '../hooks/useBeforeUnload';
 
 const MachineProblem = () => {
   const { eqpId } = useEqpId();
