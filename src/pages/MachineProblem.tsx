@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { useEqpId } from '../EquipmentIdContext';
 import { Navigate } from "react-router-dom";
+import { usePrompt } from '../hooks/usePrompt';
+
+
+interface MachineProblemProps {
+  setCheckFormDirty?: (checkFormDirty: () => boolean) => void; // Prop to pass checkFormDirty to parent
+}
 
 const MachineProblem = () => {
   const { eqpId } = useEqpId();
@@ -39,6 +45,26 @@ const MachineProblem = () => {
 
   const [commentCharsRemaining, setCommentCharsRemaining] = useState(1000);
   const [nameCharsRemaining, setNameCharsRemaining] = useState(50);
+  const [isFormDirty, setIsFormDirty] = useState(false);
+
+    usePrompt(isFormDirty, 'This survey must be completed or all your results will be lost./n Do you still wish to exit?');
+
+
+  // Check if form is dirty (i.e., has been modified)
+  const checkFormDirty = () => {
+    return (
+      formData.name !== '' ||
+      formData.email !== '' ||
+      formData.phone !== '' ||
+      formData.comments !== '' ||
+      Object.values(formData.issues).some(value => value)
+    );
+  };
+
+  // Update isFormDirty whenever formData changes
+  useEffect(() => {
+    setIsFormDirty(checkFormDirty());
+  }, [formData]);
 
   const handleIssueChange = (issue: keyof typeof formData.issues) => {
     setFormData({
@@ -61,7 +87,6 @@ const MachineProblem = () => {
       validateField(name, value);
     }
   };
-
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -145,10 +170,12 @@ const MachineProblem = () => {
     if (validateForm()) {
       console.log('Form submitted:', formData, 'eqpId', eqpId);
       alert('Form submitted successfully!');
+      setIsFormDirty(false); // Reset dirty state after successful submission
     }
   };
+
   return (
-    <div className="w-full xl:w-[96%] mx-1 px-3 py-5 min-h-screen">
+    <div className="w-full xl:w-[96%]  px-3 py-5 min-h-screen">
       <h1 className="text-[22px] font-[700] text-white">Machine Problem? </h1>
       <div className="pt-[58px] mx-auto">
         <div className="mb-6">
@@ -176,8 +203,7 @@ const MachineProblem = () => {
               return (
                 <div
                   key={key}
-                  className={`p-3 flex items-center   link-item border-[#000] h-11 ${index !== Object.entries(formData.issues).length - 1 ? 'border-b' : ''
-                    }`}
+                  className={`p-3 flex items-center link-item border-[#000] h-11 ${index !== Object.entries(formData.issues).length - 1 ? 'border-b' : ''}`}
                   onClick={() => handleIssueChange(key as keyof typeof formData.issues)}
                 >
                   <input
@@ -205,7 +231,7 @@ const MachineProblem = () => {
         </div>
 
         <div className="mb-3">
-          <label htmlFor="comments" className="block   text-[16px] font-[400] mb-4" style={{ textShadow: '0 0 0 #444444' }}>Comments:</label>
+          <label htmlFor="comments" className="block text-[16px] font-[400] mb-4" style={{ textShadow: '0 0 0 #444444' }}>Comments:</label>
           <textarea
             id="comments"
             name="comments"
@@ -213,7 +239,7 @@ const MachineProblem = () => {
             onChange={handleInputChange}
             rows={6}
             maxLength={1000}
-            className="w-full p-3 ml-[2px] h-[166px] border  border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
+            className="w-full p-3 ml-[2px] h-[166px] border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
           />
           <div className="text-left text-[16px]" style={{ textShadow: '0 0 0 #444444' }}>
             {commentCharsRemaining} Characters Remaining
@@ -277,16 +303,14 @@ const MachineProblem = () => {
         <div className="mt-4 mb-4 flex justify-end">
           <button
             onClick={handleSubmit}
-            className="bg-[#FFFFFF] text-black  hover:bg-[#c1f001] font-[700] rounded-[16px] px-3 py-2 text-[18px] border border-[#000] transition duration-300 ease-in-out focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
+            className="bg-[#FFFFFF] text-black hover:bg-[#c1f001] font-[700] rounded-[16px] px-3 py-2 text-[18px] border border-[#000] transition duration-300 ease-in-out focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
           >
             Submit
           </button>
         </div>
-
-
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MachineProblem
+export default MachineProblem;

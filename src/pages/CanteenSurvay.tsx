@@ -36,7 +36,7 @@ const CanteenSurvay: React.FC = () => {
   };
 
   return (
-    <div className="w-full xl:w-[96%] mx-1 p-4">
+    <div className="w-full xl:w-[96%] p-4">
       <div className="mb-6">
         <h1 className="text-[16px] font-[700]">ENCOMPASS BRKSVILL 941562</h1>
         <p className="text-[16px] font-[700]">16680 BALANCE COVE</p>
