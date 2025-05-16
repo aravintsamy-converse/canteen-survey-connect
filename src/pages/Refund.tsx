@@ -1,15 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useEqpId } from '../EquipmentIdContext';
 import { Navigate } from "react-router-dom";
 import { usePrompt } from '../hooks/usePrompt';
+import { FaChevronCircleDown, FaChevronCircleUp } from "react-icons/fa";
 
 const Refund = () => {
   const { eqpId } = useEqpId();
 
   // Check if eqpId is null, undefined, or empty
-  // if (!eqpId || eqpId === '') {
-  //   return <Navigate to="/survey/not-found" replace />;
-  // }
+  if (!eqpId || eqpId === '') {
+    return <Navigate to="/survey/not-found" replace />;
+  }
 
   const refundReasonOptions = [
     { value: "", label: "Choose one" },
@@ -51,6 +52,8 @@ const Refund = () => {
   const [commentCharsRemaining, setCommentCharsRemaining] = useState(500);
   const [nameCharsRemaining, setNameCharsRemaining] = useState(50);
   const [isFormDirty, setIsFormDirty] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
 
   usePrompt(isFormDirty, 'This survey must be completed or all your results will be lost.\nDo you still wish to exit?');
 
@@ -65,6 +68,19 @@ const Refund = () => {
       formData.selectedReason !== ''
     );
   };
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
 
   // Update isFormDirty whenever formData changes
   useEffect(() => {
@@ -218,33 +234,20 @@ const Refund = () => {
       <div className="pt-10 mx-auto">
         <div className="mb-6">
           <label htmlFor="refund_amount" className="block mb-2 text-base font-normal" style={{ textShadow: '0 0 0 #444444' }}>
-          Please select a reason for a refund:{errors.selectedReason && <span className="text-red-500">{errors.selectedReason}</span>}
-          </label>          
-          <div className="relative">
+            Please select a reason for a refund:{errors.selectedReason && <span className="text-red-500">{errors.selectedReason}</span>}
+          </label>
+          <div ref={dropdownRef} className="relative">
             <div
               className="flex justify-between items-center px-2 hover:bg-[#c1f001] bg-white py-3 rounded-[12px] cursor-pointer focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
               onClick={() => setDropdownOpen(!dropdownOpen)} style={{ textShadow: '0 0 0 #444444' }}
             >
               <div className="font-[700] text-[16px] text-[#000]" style={{ textShadow: '0 0 0 #444444' }}>{getSelectedLabel()}</div>
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="#000"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d={dropdownOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"}
-                />
-              </svg>
+              {dropdownOpen ? <FaChevronCircleUp className="text-[22px] text-[#4D4D4D]" /> : <FaChevronCircleDown className="text-[22px] text-[#4D4D4D]" />}
             </div>
 
             {dropdownOpen && (
               <div className="absolute z-10 w-full bg-white border border-gray-800 rounded-t-[0px] rounded-[12px] overflow-hidden">
-              {refundReasonOptions.map((option) => (
+                {refundReasonOptions.map((option) => (
                   option.value && (
                     <div
                       key={option.value}
@@ -352,7 +355,7 @@ const Refund = () => {
         </div>
 
         <div className="mt-8 text-sm text-white pl-8" style={{ textShadow: '0 0 0 #444444' }}>
-        SIID: 11918194 - JDEID: 0
+          SIID: 11918194 - JDEID: 0
         </div>
 
         <div className="mt-4 mb-4 flex justify-end">
