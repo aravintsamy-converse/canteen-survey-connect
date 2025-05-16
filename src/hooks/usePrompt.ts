@@ -1,5 +1,4 @@
-// src/hooks/usePrompt.ts
-import { useCallback, useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import type { Navigator } from 'react-router-dom';
 
 import {

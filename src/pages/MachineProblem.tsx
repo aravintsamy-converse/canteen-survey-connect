@@ -2,11 +2,7 @@ import { useEffect, useState } from "react";
 import { useEqpId } from '../EquipmentIdContext';
 import { Navigate } from "react-router-dom";
 import { usePrompt } from '../hooks/usePrompt';
-
-
-interface MachineProblemProps {
-  setCheckFormDirty?: (checkFormDirty: () => boolean) => void; // Prop to pass checkFormDirty to parent
-}
+import { useBeforeUnload } from '../hooks/useBeforeUnload';
 
 const MachineProblem = () => {
   const { eqpId } = useEqpId();
@@ -47,8 +43,7 @@ const MachineProblem = () => {
   const [nameCharsRemaining, setNameCharsRemaining] = useState(50);
   const [isFormDirty, setIsFormDirty] = useState(false);
 
-    usePrompt(isFormDirty, 'This survey must be completed or all your results will be lost./n Do you still wish to exit?');
-
+    usePrompt(isFormDirty, 'This survey must be completed or all your results will be lost.\n Do you still wish to exit?');
 
   // Check if form is dirty (i.e., has been modified)
   const checkFormDirty = () => {
