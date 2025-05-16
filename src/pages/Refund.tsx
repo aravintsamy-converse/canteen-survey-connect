@@ -7,9 +7,9 @@ const Refund = () => {
   const { eqpId } = useEqpId();
 
   // Check if eqpId is null, undefined, or empty
-  if (!eqpId || eqpId === '') {
-    return <Navigate to="/survey/not-found" replace />;
-  }
+  // if (!eqpId || eqpId === '') {
+  //   return <Navigate to="/survey/not-found" replace />;
+  // }
 
   const refundReasonOptions = [
     { value: "", label: "Choose one" },
@@ -213,23 +213,23 @@ const Refund = () => {
   };
 
   return (
-    <div className="w-full  px-3 py-5 min-h-screen">
-      <h1 className="text-2xl font-bold text-white">Need a Refund?</h1>
-      <div className="pt-14 mx-auto">
+    <div className="w-full lg:w-[97%] px-4 py-5 min-h-screen">
+      <h1 className="text-[22px] font-bold text-white">Need a Refund?</h1>
+      <div className="pt-10 mx-auto">
         <div className="mb-6">
-          <label htmlFor="refund_amount" className="block mb-1 text-base font-normal" style={{ textShadow: '0 0 0 #444444' }}>
+          <label htmlFor="refund_amount" className="block mb-2 text-base font-normal" style={{ textShadow: '0 0 0 #444444' }}>
           Please select a reason for a refund:{errors.selectedReason && <span className="text-red-500">{errors.selectedReason}</span>}
           </label>          
           <div className="relative">
             <div
-              className="flex justify-between items-center py-2 px-4 bg-lime-600 text-white rounded-t cursor-pointer"
-              onClick={() => setDropdownOpen(!dropdownOpen)}
+              className="flex justify-between items-center px-2 hover:bg-[#c1f001] bg-white py-3 rounded-[12px] cursor-pointer focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
+              onClick={() => setDropdownOpen(!dropdownOpen)} style={{ textShadow: '0 0 0 #444444' }}
             >
-              <span>{getSelectedLabel()}</span>
+              <div className="font-[700] text-[16px] text-[#000]" style={{ textShadow: '0 0 0 #444444' }}>{getSelectedLabel()}</div>
               <svg
                 className="w-5 h-5"
                 fill="none"
-                stroke="currentColor"
+                stroke="#000"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -243,14 +243,14 @@ const Refund = () => {
             </div>
 
             {dropdownOpen && (
-              <div className="absolute z-10 w-full bg-white border border-gray-800 rounded-b">
-                {refundReasonOptions.map((option) => (
+              <div className="absolute z-10 w-full bg-white border border-gray-800 rounded-t-[0px] rounded-[12px] overflow-hidden">
+              {refundReasonOptions.map((option) => (
                   option.value && (
                     <div
                       key={option.value}
-                      className={`p-3 hover:bg-gray-100 cursor-pointer border-t border-gray-800 ${formData.selectedReason === option.value ? 'bg-blue-100' : ''
+                      className={`p-3 hover:bg-[#c1f001] cursor-pointer font-[700] text-[16px] text-[#000] border-t border-gray-800 ${formData.selectedReason === option.value ? 'bg-blue-100' : ''
                         }`}
-                      onClick={() => handleSelecReason(option.value)}
+                      onClick={() => handleSelecReason(option.value)} style={{ textShadow: '0 0 0 #444444' }}
                     >
                       <span className={`${formData.selectedReason === option.value ? 'font-bold' : ''}`}>
                         {option.label}
@@ -267,10 +267,6 @@ const Refund = () => {
         </div>
 
         <div className="mb-6">
-          <p className="mb-2 text-base font-bold" style={{ textShadow: '0 0 0 #444444' }}>
-            If you would like to receive a confirmation email please provide contact information below:
-          </p>
-
           <div className="mb-4">
             <label htmlFor="refund_amount" className="block mb-1 text-base font-normal" style={{ textShadow: '0 0 0 #444444' }}>
               Refund amount: {errors.refund_amount && <span className="text-red-500">{errors.refund_amount}</span>}
@@ -282,7 +278,7 @@ const Refund = () => {
               value={formData.refund_amount}
               onChange={handleInputChange}
               onBlur={handleBlur}
-              className="w-full p-2 border border-gray-600 rounded-xl bg-gray-500 focus:outline-none focus:ring-0 focus:shadow-lg"
+              className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
             />
           </div>
 
@@ -298,7 +294,7 @@ const Refund = () => {
               onChange={handleInputChange}
               onBlur={handleBlur}
               maxLength={50}
-              className="w-full p-2 border border-gray-600 rounded-xl bg-gray-500 focus:outline-none focus:ring-0 focus:shadow-lg"
+              className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
             />
             <div className="text-left text-base mt-1 font-normal" style={{ textShadow: '0 0 0 #444444' }}>
               {nameCharsRemaining} Characters Remaining
@@ -316,7 +312,7 @@ const Refund = () => {
               value={formData.email}
               onChange={handleInputChange}
               onBlur={handleBlur}
-              className="w-full p-2 border border-gray-600 rounded-xl bg-gray-500 focus:outline-none focus:ring-0 focus:shadow-lg"
+              className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
             />
           </div>
 
@@ -330,7 +326,7 @@ const Refund = () => {
               name="phone"
               value={formData.phone}
               onChange={handleInputChange}
-              className="w-full p-2 border border-gray-600 rounded-xl bg-gray-500 focus:outline-none focus:ring-0 focus:shadow-lg"
+              className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
             />
           </div>
 
@@ -347,7 +343,7 @@ const Refund = () => {
               onBlur={handleBlur}
               rows={6}
               maxLength={500}
-              className="w-full p-3 ml-0.5 h-40 border border-gray-600 rounded-xl bg-gray-500 focus:outline-none focus:ring-0 focus:shadow-lg"
+              className="w-full p-3 ml-[2px] h-[166px] border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
             />
             <div className="text-left text-base" style={{ textShadow: '0 0 0 #444444' }}>
               {commentCharsRemaining} Characters Remaining
@@ -356,13 +352,13 @@ const Refund = () => {
         </div>
 
         <div className="mt-8 text-sm text-white pl-8" style={{ textShadow: '0 0 0 #444444' }}>
-          SIID: 11900606 - JDEID: 0
+        SIID: 11918194 - JDEID: 0
         </div>
 
         <div className="mt-4 mb-4 flex justify-end">
           <button
             onClick={handleSubmit}
-            className="bg-white text-black hover:bg-lime-300 font-bold rounded-2xl px-3 py-2 text-lg border border-black transition duration-300 ease-in-out focus:outline-none focus:ring-0 focus:shadow-lg"
+            className="bg-white text-black hover:bg-lime-300 font-bold rounded-2xl px-3 py-2 text-lg border border-black transition duration-300 ease-in-out bg-[#808080]focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
           >
             Submit
           </button>
