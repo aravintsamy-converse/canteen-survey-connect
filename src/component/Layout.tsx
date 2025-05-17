@@ -31,7 +31,7 @@ const Layout: React.FC<LayoutProps> = ({ setIsNavigating }) => {
         <div className="w-full flex justify-between items-center">
           <div className="flex items-center cursor-pointer" onClick={() => handleNavigation(`/survey/home/${eqpId}`)}>
             <img
-              src="/canteen.png"
+              src="/canteenlogo.png"
               alt="Canteen Logo"
               className="h-[50px] w-auto"
             />
