@@ -15,7 +15,6 @@ const CanteenSurvay: React.FC = () => {
     setIsloading(true);
 
     setTimeout(() => {
-      console.log('Navigating to:', to);
       navigate(to);
       setIsloading(false);
     }, 100); // Tiny delay to ensure loader renders
@@ -32,7 +31,6 @@ const CanteenSurvay: React.FC = () => {
 
   const handleSubmitLocation = (location: string) => {
     console.log('New location submitted:', location);
-    // Add logic to handle the new location
   };
 
   return (

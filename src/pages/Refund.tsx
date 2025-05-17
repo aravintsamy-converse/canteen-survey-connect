@@ -361,7 +361,7 @@ const Refund = () => {
         <div className="mt-4 mb-4 flex justify-end">
           <button
             onClick={handleSubmit}
-            className="bg-white text-black hover:bg-lime-300 font-bold rounded-2xl px-3 py-2 text-lg border border-black transition duration-300 ease-in-out bg-[#808080]focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
+            className="bg-white cursor-pointer text-black hover:bg-lime-300 font-bold rounded-2xl px-3 py-2 text-lg border border-black transition duration-300 ease-in-out bg-[#808080]focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
           >
             Submit
           </button>

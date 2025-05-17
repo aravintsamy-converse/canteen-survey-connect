@@ -197,7 +197,7 @@ const MachineProblem = () => {
               return (
                 <div
                   key={key}
-                  className={`p-3 flex items-center link-item border-[#000] h-11 ${index !== Object.entries(formData.issues).length - 1 ? 'border-b' : ''}`}
+                  className={`p-3 flex items-center cursor-pointer link-item border-[#000] h-11 ${index !== Object.entries(formData.issues).length - 1 ? 'border-b' : ''}`}
                   onClick={() => handleIssueChange(key as keyof typeof formData.issues)}
                 >
                   <input
@@ -210,7 +210,7 @@ const MachineProblem = () => {
                   <label
                     htmlFor={key}
                     onClick={(e) => e.stopPropagation()}
-                    className="select-none text-black text-[16px] font-[700]"
+                    className="select-none cursor-pointer text-black text-[16px] font-[700]"
                     style={{ textShadow: '0 0 0 #444444' }}
                   >
                     {issueText}
@@ -297,7 +297,7 @@ const MachineProblem = () => {
         <div className="mt-4 mb-4 flex justify-end">
           <button
             onClick={handleSubmit}
-            className="bg-[#FFFFFF] text-black hover:bg-[#c1f001] font-[700] rounded-[16px] px-3 py-2 text-[18px] border border-[#000] transition duration-300 ease-in-out focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
+            className="bg-[#FFFFFF] cursor-pointer text-black hover:bg-[#c1f001] font-[700] rounded-[16px] px-3 py-2 text-[18px] border border-[#000] transition duration-300 ease-in-out focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
           >
             Submit
           </button>
