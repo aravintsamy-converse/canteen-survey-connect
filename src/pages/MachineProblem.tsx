@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useEqpId } from '../EquipmentIdContext';
 import { Navigate } from "react-router-dom";
 import { usePrompt } from '../hooks/usePrompt';
+import { fetchCaseSubtypes } from '../services/issueService';
+
+interface Issue {
+  value: string;
+  label: string;
+}
 
 const MachineProblem = () => {
   const { eqpId } = useEqpId();
-   
+  const navigate = useNavigate();
+
   // Check if eqpId is null, undefined, or empty
   if (!eqpId || eqpId === '') {
     return <Navigate to="/survey/not-found" replace />;
@@ -17,41 +25,51 @@ const MachineProblem = () => {
     email: '',
     phone: '',
     comments: '',
-    issues: {
-      needsToBeFilled: false,
-      machineIsNotWorking: false,
-      wontAcceptCreditCard: false,
-      machineIsDamaged: false,
-      needsCleaning: false,
-      notAcceptingMoney: false,
-    }
+    issues: [] as string[], // Store selected issue values
   });
 
+  const [issuesList, setIssuesList] = useState<Issue[]>([]);
   const [errors, setErrors] = useState({
     name: '',
     email: '',
-    issues: ''
+    issues: '',
   });
-
   const [touched, setTouched] = useState({
     name: false,
-    email: false
+    email: false,
   });
-
   const [commentCharsRemaining, setCommentCharsRemaining] = useState(1000);
   const [nameCharsRemaining, setNameCharsRemaining] = useState(50);
   const [isFormDirty, setIsFormDirty] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
 
-    usePrompt(isFormDirty, 'This survey must be completed or all your results will be lost.\n Do you still wish to exit?');
+  usePrompt(isFormDirty, 'This survey must be completed or all your results will be lost.\n Do you still wish to exit?');
 
-  // Check if form is dirty (i.e., has been modified)
+  // Fetch issues from API
+  useEffect(() => {
+    const loadIssues = async () => {
+      setIsLoading(true);
+      setApiError(null);
+      const issues = await fetchCaseSubtypes('machine-problem'); // Assuming 'equipment_issue' is the issue type
+      if (issues.length > 0) {
+        setIssuesList(issues);
+      } else {
+        setApiError('Failed to load issues');
+      }
+      setIsLoading(false);
+    };
+    loadIssues();
+  }, []);
+
+  // Check if form is dirty
   const checkFormDirty = () => {
     return (
       formData.name !== '' ||
       formData.email !== '' ||
       formData.phone !== '' ||
       formData.comments !== '' ||
-      Object.values(formData.issues).some(value => value)
+      formData.issues.length > 0
     );
   };
 
@@ -60,13 +78,18 @@ const MachineProblem = () => {
     setIsFormDirty(checkFormDirty());
   }, [formData]);
 
-  const handleIssueChange = (issue: keyof typeof formData.issues) => {
-    setFormData({
-      ...formData,
-      issues: {
-        ...formData.issues,
-        [issue]: !formData.issues[issue]
-      }
+  // Update character counts
+  useEffect(() => {
+    setCommentCharsRemaining(1000 - formData.comments.length);
+    setNameCharsRemaining(50 - formData.name.length);
+  }, [formData.comments, formData.name]);
+
+  const handleIssueChange = (issueValue: string) => {
+    setFormData((prev) => {
+      const newIssues = prev.issues.includes(issueValue)
+        ? prev.issues.filter((id) => id !== issueValue)
+        : [...prev.issues, issueValue];
+      return { ...prev, issues: newIssues };
     });
   };
 
@@ -74,7 +97,7 @@ const MachineProblem = () => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
 
     if (touched[name as keyof typeof touched] && errors[name as keyof typeof errors]) {
@@ -85,18 +108,13 @@ const MachineProblem = () => {
   const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
 
-    setTouched(prev => ({
+    setTouched((prev) => ({
       ...prev,
-      [name]: true
+      [name]: true,
     }));
 
     validateField(name, value);
   };
-
-  useEffect(() => {
-    setCommentCharsRemaining(1000 - formData.comments.length);
-    setNameCharsRemaining(50 - formData.name.length);
-  }, [formData.comments, formData.name]);
 
   const validateField = (name: string, value: string) => {
     let errorMessage = '';
@@ -116,21 +134,20 @@ const MachineProblem = () => {
       }
     }
 
-    setErrors(prev => ({
+    setErrors((prev) => ({
       ...prev,
-      [name]: errorMessage
+      [name]: errorMessage,
     }));
 
     return !errorMessage;
   };
 
-  // Validate form
   const validateForm = () => {
     let isValid = true;
     const newErrors = {
       name: '',
       email: '',
-      issues: ''
+      issues: '',
     };
 
     if (!formData.name.trim()) {
@@ -149,8 +166,7 @@ const MachineProblem = () => {
       }
     }
 
-    const hasSelectedIssue = Object.values(formData.issues).some(value => value);
-    if (!hasSelectedIssue) {
+    if (formData.issues.length === 0) {
       newErrors.issues = 'Please select at least one issue';
       isValid = false;
     }
@@ -162,70 +178,61 @@ const MachineProblem = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log('Form submitted:', formData, 'eqpId', eqpId);
+      console.log('Form submitted:', formData);
+      console.log('Selected issue values:', formData.issues); // Log selected issue values
       alert('Form submitted successfully!');
-      setIsFormDirty(false); // Reset dirty state after successful submission
+      setIsFormDirty(false);
+      navigate("/survey/success"); // Navigate to a success page after submission
     }
   };
 
   return (
-    <div className="w-full xl:w-[96%]  px-3 py-5 min-h-screen">
-      <h1 className="text-[22px] font-[700] text-white">Machine Problem? </h1>
+    <div className="w-full xl:w-[96%] px-3 py-5 min-h-screen">
+      <h1 className="text-[22px] font-[700] text-white">Machine Problem?</h1>
       <div className="pt-[58px] mx-auto">
-        <div className="mb-6">
-          <p className="font-[400] text-[16px] mb-0" style={{ textShadow: '0 0 0 #444444' }}>Choose all issues that apply:</p>
-          <div className="border border-[#000] bg-white overflow-hidden rounded-[12px] w-full md:w-[78%]">
-            {Object.entries(formData.issues).map(([key, value], index) => {
-              const issueText = (() => {
-                switch (key) {
-                  case 'needsToBeFilled':
-                    return 'Needs to be filled';
-                  case 'machineIsNotWorking':
-                    return 'Machine is not working';
-                  case 'wontAcceptCreditCard':
-                    return 'Won\'t accept credit card';
-                  case 'machineIsDamaged':
-                    return 'Machine is damaged';
-                  case 'needsCleaning':
-                    return 'Needs cleaning';
-                  case 'notAcceptingMoney':
-                    return 'Not Accepting Money';
-                  default:
-                    return '';
-                };
-              })();
-              return (
+        {isLoading ? (
+          <p>Loading issues...</p>
+        ) : apiError ? (
+          <p className="text-red-500">{apiError}</p>
+        ) : (
+          <div className="mb-6">
+            <p className="font-[400] text-[16px] mb-0" style={{ textShadow: '0 0 0 #444444' }}>
+              Choose all issues that apply:
+            </p>
+            <div className="border border-[#000] bg-white overflow-hidden rounded-[12px] w-full md:w-[78%]">
+              {issuesList.map((issue, index) => (
                 <div
-                  key={key}
-                  className={`p-3 flex items-center cursor-pointer link-item border-[#000] h-11 ${index !== Object.entries(formData.issues).length - 1 ? 'border-b' : ''}`}
-                  onClick={() => handleIssueChange(key as keyof typeof formData.issues)}
+                  key={issue.value}
+                  className={`p-3 flex items-center cursor-pointer link-item border-[#000] h-11 ${
+                    index !== issuesList.length - 1 ? 'border-b' : ''
+                  }`}
+                  onClick={() => handleIssueChange(issue.value)}
                 >
                   <input
                     type="checkbox"
-                    id={key}
-                    checked={value}
-                    onChange={() => handleIssueChange(key as keyof typeof formData.issues)}
+                    id={issue.value}
+                    checked={formData.issues.includes(issue.value)}
                     className="mr-3 h-5 w-5 custom-checkbox"
                   />
                   <label
-                    htmlFor={key}
-                    onClick={(e) => e.stopPropagation()}
+                    htmlFor={issue.value}
+                    onClick={() => handleIssueChange(issue.value)}
                     className="select-none cursor-pointer text-black text-[16px] font-[700]"
                     style={{ textShadow: '0 0 0 #444444' }}
                   >
-                    {issueText}
+                    {issue.label}
                   </label>
                 </div>
-              );
-            })}
+              ))}
+            </div>
+            {errors.issues && <p className="text-red-500 mt-1">{errors.issues}</p>}
           </div>
-          {errors.issues && (
-            <p className="text-red-500 mt-1">{errors.issues}</p>
-          )}
-        </div>
+        )}
 
         <div className="mb-3">
-          <label htmlFor="comments" className="block text-[16px] font-[400] mb-4" style={{ textShadow: '0 0 0 #444444' }}>Comments:</label>
+          <label htmlFor="comments" className="block text-[16px] font-[400] mb-4" style={{ textShadow: '0 0 0 #444444' }}>
+            Comments:
+          </label>
           <textarea
             id="comments"
             name="comments"
@@ -241,7 +248,9 @@ const MachineProblem = () => {
         </div>
 
         <div className="mb-6">
-          <p className="mb-2 text-[16px] font-[700]" style={{ textShadow: '0 0 0 #444444' }}>If you would like to receive a confirmation email please provide contact information below:</p>
+          <p className="mb-2 text-[16px] font-[700]" style={{ textShadow: '0 0 0 #444444' }}>
+            If you would like to receive a confirmation email please provide contact information below:
+          </p>
 
           <div className="mb-4">
             <label htmlFor="name" className="block mb-1 text-[16px] font-[400]" style={{ textShadow: '0 0 0 #444444' }}>
