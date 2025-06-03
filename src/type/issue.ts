@@ -26,6 +26,7 @@ export interface SubmitIssuePayload {
 export interface SuccessModalProps {
   isOpen: boolean
   onClose: () => void
+  message: string
 }
 
 export interface LocationModalProps {

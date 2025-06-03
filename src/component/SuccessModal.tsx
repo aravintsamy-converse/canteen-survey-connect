@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { CheckCircle, X, Home, ArrowRight } from 'lucide-react'
+import { CheckCircle, X} from 'lucide-react'
 import type { SuccessModalProps } from '../type/issue'
 
-const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
+const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose, message }) => {
   const [shouldRender, setShouldRender] = useState(isOpen)
   const [isAnimating, setIsAnimating] = useState(false)
 
@@ -15,11 +15,6 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
       setTimeout(() => setShouldRender(false), 300)
     }
   }, [isOpen])
-
-  const handleRedirectHome = () => {
-    // Add your navigation logic here
-    onClose()
-  }
 
   if (!shouldRender) return null
 
@@ -63,28 +58,9 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
 
           {/* Message */}
           <p className="text-gray-600 mb-8 leading-relaxed">
-            Your issue has been submitted successfully. We'll get back to you soon with an update.
+          {message}
           </p>
 
-          {/* Action buttons */}
-          <div className="flex flex-col sm:flex-row gap-3">
-            <button
-              disabled={true} // Replace with actual condition if needed
-              onClick={handleRedirectHome}
-              className="flex-1 bg-gradient-to-r cursor-pointer from-gray-500 to-gray-600 text-white px-6 py-3 rounded-xl font-medium hover:from-green-600 hover:to-emerald-700 transition-all duration-200 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2"
-            >
-              <Home className="w-4 h-4" />
-              Go to Home
-              <ArrowRight className="w-4 h-4" />
-            </button>
-            <button
-              onClick={onClose}
-              disabled={true} // Replace with actual condition if needed
-              className="flex-1 bg-gray-100 text-gray-700 cursor-pointer px-6 py-3 rounded-xl font-medium hover:bg-gray-200 transition-all duration-200 transform hover:scale-105"
-            >
-              Stay Here
-            </button>
-          </div>
         </div>
 
         {/* Floating particles */}

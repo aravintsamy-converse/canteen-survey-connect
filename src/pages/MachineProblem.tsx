@@ -11,7 +11,6 @@ const MachineProblem = () => {
   const { eqpId } = useEqpId();
   const navigate = useNavigate();
 
-
   // Check if eqpId is null, undefined, or empty
   if (!eqpId || eqpId === '') {
     return <Navigate to="/survey/not-found" replace />;
@@ -346,6 +345,7 @@ const MachineProblem = () => {
          <SuccessModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
+        message="Your issue has been submitted successfully. Thank you for your feedback!"
       />
     </div>
   );
