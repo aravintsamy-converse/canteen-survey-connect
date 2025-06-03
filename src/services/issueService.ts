@@ -1,11 +1,6 @@
 import axios from 'axios';
-import type { SubmitIssuePayload } from '../type/issue';
+import type { Issue, SubmitIssuePayload } from '../type/issue';
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
-
-interface Issue {
-  value: string;
-  label: string;
-}
 
 export const fetchCaseSubtypes = async (issueType: string): Promise<Issue[]> => {
   try {

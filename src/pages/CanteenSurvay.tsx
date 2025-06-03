@@ -51,9 +51,7 @@ const CanteenSurvay: React.FC = () => {
           <h1 className="text-[16px] font-[700]">{equipmentDetails.name}</h1>
           <p className="text-[16px] font-[700]">{equipmentDetails.address1_line1}</p>
           <p>
-            {equipmentDetails.address1_city}, {equipmentDetails.address1_stateorprovince}
-          </p>
-          <p className="text-[16px] font-[700]">
+            {equipmentDetails.address1_city}, {equipmentDetails.address1_stateorprovince}{' '}
             {equipmentDetails.address1_postalcode}
           </p>
         </div>
