@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEqpId } from '../EquipmentIdContext';
 import { Navigate } from "react-router-dom";
 import { usePrompt } from '../hooks/usePrompt';
 import { fetchCaseSubtypes } from '../services/issueService';
+import Loader from "../component/Loader";
 
 interface Issue {
   value: string;
@@ -188,130 +189,132 @@ const MachineProblem = () => {
 
   return (
     <div className="w-full xl:w-[96%] px-3 py-5 min-h-screen">
-      <h1 className="text-[22px] font-[700] text-white">Machine Problem?</h1>
-      <div className="pt-[58px] mx-auto">
-        {isLoading ? (
-          <p>Loading issues...</p>
-        ) : apiError ? (
-          <p className="text-red-500">{apiError}</p>
-        ) : (
-          <div className="mb-6">
-            <p className="font-[400] text-[16px] mb-0" style={{ textShadow: '0 0 0 #444444' }}>
-              Choose all issues that apply:
-            </p>
-            <div className="border border-[#000] bg-white overflow-hidden rounded-[12px] w-full md:w-[78%]">
-              {issuesList.map((issue, index) => (
-                <div
-                  key={issue.value}
-                  className={`p-3 flex items-center cursor-pointer link-item border-[#000] h-11 ${
-                    index !== issuesList.length - 1 ? 'border-b' : ''
-                  }`}
-                  onClick={() => handleIssueChange(issue.value)}
-                >
-                  <input
-                    type="checkbox"
-                    id={issue.value}
-                    checked={formData.issues.includes(issue.value)}
-                    className="mr-3 h-5 w-5 custom-checkbox"
-                  />
-                  <label
-                    htmlFor={issue.value}
+      {isLoading ? <Loader /> : (
+        <div className="mx-auto">
+          <h1 className="text-[22px] font-[700] text-white">Machine Problem?</h1>
+          {isLoading ? (
+            <p>Loading issues...</p>
+          ) : apiError ? (
+            <p className="text-red-500">{apiError}</p>
+          ) : (
+            <div className="pt-[58px]  mb-6">
+              <p className="font-[400] text-[16px] mb-0" style={{ textShadow: '0 0 0 #444444' }}>
+                Choose all issues that apply:
+              </p>
+              <div className="border border-[#000] bg-white overflow-hidden rounded-[12px] w-full md:w-[78%]">
+                {issuesList.map((issue, index) => (
+                  <div
+                    key={issue.value}
+                    className={`p-3 flex items-center cursor-pointer link-item border-[#000] h-11 ${index !== issuesList.length - 1 ? 'border-b' : ''
+                      }`}
                     onClick={() => handleIssueChange(issue.value)}
-                    className="select-none cursor-pointer text-black text-[16px] font-[700]"
-                    style={{ textShadow: '0 0 0 #444444' }}
                   >
-                    {issue.label}
-                  </label>
-                </div>
-              ))}
+                    <input
+                      type="checkbox"
+                      id={issue.value}
+                      checked={formData.issues.includes(issue.value)}
+                      className="mr-3 h-5 w-5 custom-checkbox"
+                    />
+                    <label
+                      htmlFor={issue.value}
+                      onClick={() => handleIssueChange(issue.value)}
+                      className="select-none cursor-pointer text-black text-[16px] font-[700]"
+                      style={{ textShadow: '0 0 0 #444444' }}
+                    >
+                      {issue.label}
+                    </label>
+                  </div>
+                ))}
+              </div>
+              {errors.issues && <p className="text-red-500 mt-1">{errors.issues}</p>}
             </div>
-            {errors.issues && <p className="text-red-500 mt-1">{errors.issues}</p>}
-          </div>
-        )}
+          )}
 
-        <div className="mb-3">
-          <label htmlFor="comments" className="block text-[16px] font-[400] mb-4" style={{ textShadow: '0 0 0 #444444' }}>
-            Comments:
-          </label>
-          <textarea
-            id="comments"
-            name="comments"
-            value={formData.comments}
-            onChange={handleInputChange}
-            rows={6}
-            maxLength={1000}
-            className="w-full p-3 ml-[2px] h-[166px] border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
-          />
-          <div className="text-left text-[16px]" style={{ textShadow: '0 0 0 #444444' }}>
-            {commentCharsRemaining} Characters Remaining
-          </div>
-        </div>
-
-        <div className="mb-6">
-          <p className="mb-2 text-[16px] font-[700]" style={{ textShadow: '0 0 0 #444444' }}>
-            If you would like to receive a confirmation email please provide contact information below:
-          </p>
-
-          <div className="mb-4">
-            <label htmlFor="name" className="block mb-1 text-[16px] font-[400]" style={{ textShadow: '0 0 0 #444444' }}>
-              Name: {errors.name && <span className="text-red-500">{errors.name}</span>}
+          <div className="mb-3">
+            <label htmlFor="comments" className="block text-[16px] font-[400] mb-4" style={{ textShadow: '0 0 0 #444444' }}>
+              Comments:
             </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
+            <textarea
+              id="comments"
+              name="comments"
+              value={formData.comments}
               onChange={handleInputChange}
-              onBlur={handleBlur}
-              maxLength={50}
-              className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
+              rows={6}
+              maxLength={1000}
+              className="w-full p-3 ml-[2px] h-[166px] border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
             />
-            <div className="text-left text-[16px] mt-1 font-[400]" style={{ textShadow: '0 0 0 #444444' }}>
-              {nameCharsRemaining} Characters Remaining
+            <div className="text-left text-[16px]" style={{ textShadow: '0 0 0 #444444' }}>
+              {commentCharsRemaining} Characters Remaining
             </div>
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="email" className="block mb-1 text-[16px] font-[400]" style={{ textShadow: '0 0 0 #444444' }}>
-              Email Address: {errors.email && <span className="text-red-500">{errors.email}</span>}
-            </label>
-            <input
-              type="text"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              onBlur={handleBlur}
-              className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
-            />
-          </div>
+          <div className="mb-6">
+            <p className="mb-2 text-[16px] font-[700]" style={{ textShadow: '0 0 0 #444444' }}>
+              If you would like to receive a confirmation email please provide contact information below:
+            </p>
 
-          <div className="mb-4">
-            <label htmlFor="phone" className="block mb-1 text-[16px] font-[400]" style={{ textShadow: '0 0 0 #444444' }}>
-              Phone (e.g. 9998887777 or 19998887777):
-            </label>
-            <input
-              type="number"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleInputChange}
-              className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
-            />
+            <div className="mb-4">
+              <label htmlFor="name" className="block mb-1 text-[16px] font-[400]" style={{ textShadow: '0 0 0 #444444' }}>
+                Name: {errors.name && <span className="text-red-500">{errors.name}</span>}
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                maxLength={50}
+                className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
+              />
+              <div className="text-left text-[16px] mt-1 font-[400]" style={{ textShadow: '0 0 0 #444444' }}>
+                {nameCharsRemaining} Characters Remaining
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="email" className="block mb-1 text-[16px] font-[400]" style={{ textShadow: '0 0 0 #444444' }}>
+                Email Address: {errors.email && <span className="text-red-500">{errors.email}</span>}
+              </label>
+              <input
+                type="text"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="phone" className="block mb-1 text-[16px] font-[400]" style={{ textShadow: '0 0 0 #444444' }}>
+                Phone (e.g. 9998887777 or 19998887777):
+              </label>
+              <input
+                type="number"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
+              />
+            </div>
+          </div>
+          <div className="mt-8 text-sm text-white text-[14px] font-[400] pl-8" style={{ textShadow: '0 0 0 #444444' }}>
+            SIID: 11900606 - JDEID: 0
+          </div>
+          <div className="mt-4 mb-4 flex justify-end">
+            <button
+              onClick={handleSubmit}
+              className="bg-[#FFFFFF] cursor-pointer text-black hover:bg-[#c1f001] font-[700] rounded-[16px] px-3 py-2 text-[18px] border border-[#000] transition duration-300 ease-in-out focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
+            >
+              Submit
+            </button>
           </div>
         </div>
-        <div className="mt-8 text-sm text-white text-[14px] font-[400] pl-8" style={{ textShadow: '0 0 0 #444444' }}>
-          SIID: 11900606 - JDEID: 0
-        </div>
-        <div className="mt-4 mb-4 flex justify-end">
-          <button
-            onClick={handleSubmit}
-            className="bg-[#FFFFFF] cursor-pointer text-black hover:bg-[#c1f001] font-[700] rounded-[16px] px-3 py-2 text-[18px] border border-[#000] transition duration-300 ease-in-out focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
-          >
-            Submit
-          </button>
-        </div>
-      </div>
+      )}
+
     </div>
   );
 };

@@ -3,6 +3,8 @@ import { useEqpId } from '../EquipmentIdContext';
 import { Navigate } from "react-router-dom";
 import { usePrompt } from '../hooks/usePrompt';
 import { FaChevronCircleDown, FaChevronCircleUp } from "react-icons/fa";
+import { fetchCaseSubtypes } from "../services/issueService";
+import Loader from "../component/Loader";
 
 const Refund = () => {
   const { eqpId } = useEqpId();
@@ -11,16 +13,6 @@ const Refund = () => {
   if (!eqpId || eqpId === '') {
     return <Navigate to="/survey/not-found" replace />;
   }
-
-  const refundReasonOptions = [
-    { value: "", label: "Choose one" },
-    { value: "otherIssue", label: "Other issue" },
-    { value: "didntReceiveProduct", label: "Didn't receive product" },
-    { value: "moneyJammed", label: "My money jammed" },
-    { value: "pastSellByDate", label: "Past sell by date" },
-    { value: "productDamaged", label: "Product is damaged" },
-    { value: "didntReceiveChange", label: "Didn't receive change" }
-  ];
 
   const [formData, setFormData] = useState({
     eqpId: eqpId,
@@ -53,6 +45,9 @@ const Refund = () => {
   const [nameCharsRemaining, setNameCharsRemaining] = useState(50);
   const [isFormDirty, setIsFormDirty] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const [refundReasonOptions, setRefundReasonOptions] = useState<{ value: string; label: string }[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
 
 
   usePrompt(isFormDirty, 'This survey must be completed or all your results will be lost.\nDo you still wish to exit?');
@@ -68,6 +63,21 @@ const Refund = () => {
       formData.selectedReason !== ''
     );
   };
+
+  useEffect(() => {
+    const loadIssues = async () => {
+      setIsLoading(true);
+      setApiError(null);
+      const issues = await fetchCaseSubtypes('refund'); // Assuming 'equipment_issue' is the issue type
+      if (issues.length > 0) {
+        setRefundReasonOptions(issues);
+      } else {
+        setApiError('Failed to load issues');
+      }
+      setIsLoading(false);
+    };
+    loadIssues();
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -225,148 +235,155 @@ const Refund = () => {
 
   const getSelectedLabel = () => {
     const selected = refundReasonOptions.find(option => option.value === formData.selectedReason);
-    return selected ? selected.label : "Please select a reason for a refund";
+    return selected ? selected.label : "Choose one";
   };
 
   return (
-    <div className="w-full lg:w-[97%] px-4 py-5 min-h-screen">
-      <h1 className="text-[22px] font-bold text-white">Need a Refund?</h1>
-      <div className="pt-10 mx-auto">
-        <div className="mb-6">
-          <label htmlFor="refund_amount" className="block mb-2 text-base font-normal" style={{ textShadow: '0 0 0 #444444' }}>
-            Please select a reason for a refund:{errors.selectedReason && <span className="text-red-500">{errors.selectedReason}</span>}
-          </label>
-          <div ref={dropdownRef} className="relative">
-            <div
-              className="flex justify-between items-center px-2 hover:bg-[#c1f001] bg-white py-3 rounded-[12px] cursor-pointer focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
-              onClick={() => setDropdownOpen(!dropdownOpen)} style={{ textShadow: '0 0 0 #444444' }}
-            >
-              <div className="font-[700] text-[16px] text-[#000]" style={{ textShadow: '0 0 0 #444444' }}>{getSelectedLabel()}</div>
-              {dropdownOpen ? <FaChevronCircleUp className="text-[22px] text-[#4D4D4D]" /> : <FaChevronCircleDown className="text-[22px] text-[#4D4D4D]" />}
-            </div>
 
-            {dropdownOpen && (
-              <div className="absolute z-10 w-full bg-white border border-gray-800 rounded-t-[0px] rounded-[12px] overflow-hidden">
-                {refundReasonOptions.map((option) => (
-                  option.value && (
-                    <div
-                      key={option.value}
-                      className={`p-3 hover:bg-[#c1f001] cursor-pointer font-[700] text-[16px] text-[#000] border-t border-gray-800 ${formData.selectedReason === option.value ? 'bg-blue-100' : ''
-                        }`}
-                      onClick={() => handleSelecReason(option.value)} style={{ textShadow: '0 0 0 #444444' }}
-                    >
-                      <span className={`${formData.selectedReason === option.value ? 'font-bold' : ''}`}>
-                        {option.label}
-                      </span>
-                    </div>
-                  )
-                ))}
+    <div className="w-full lg:w-[97%] px-4 py-5 min-h-screen">
+      {isLoading ? <Loader /> : (
+        <div className=" mx-auto">
+          <h1 className="text-[22px] font-bold text-white">Need a Refund?</h1>
+          {apiError && (
+            <div className="text-red-500 mb-4">
+              {apiError}
+            </div>
+          )}
+          <div className="pt-10 mb-6">
+            <label htmlFor="refund_amount" className="block mb-2 text-base font-normal" style={{ textShadow: '0 0 0 #444444' }}>
+              Please select a reason for a refund:{errors.selectedReason && <span className="text-red-500">{errors.selectedReason}</span>}
+            </label>
+            <div ref={dropdownRef} className="relative">
+              <div
+                className="flex justify-between items-center px-2 hover:bg-[#c1f001] bg-white py-3 rounded-[12px] cursor-pointer focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
+                onClick={() => setDropdownOpen(!dropdownOpen)} style={{ textShadow: '0 0 0 #444444' }}
+              >
+                <div className="font-[700] text-[16px] text-[#000]" style={{ textShadow: '0 0 0 #444444' }}>{getSelectedLabel()}</div>
+                {dropdownOpen ? <FaChevronCircleUp className="text-[22px] text-[#4D4D4D]" /> : <FaChevronCircleDown className="text-[22px] text-[#4D4D4D]" />}
               </div>
+
+              {dropdownOpen && (
+                <div className="absolute z-10 w-full bg-white border border-gray-800 rounded-t-[0px] rounded-[12px] overflow-hidden">
+                  {refundReasonOptions.map((option) => (
+                    option.value && (
+                      <div
+                        key={option.value}
+                        className={`p-3 hover:bg-[#c1f001] cursor-pointer font-[700] text-[16px] text-[#000] border-t border-gray-800 ${formData.selectedReason === option.value ? 'bg-blue-100' : ''
+                          }`}
+                        onClick={() => handleSelecReason(option.value)} style={{ textShadow: '0 0 0 #444444' }}
+                      >
+                        <span className={`${formData.selectedReason === option.value ? 'font-bold' : ''}`}>
+                          {option.label}
+                        </span>
+                      </div>
+                    )
+                  ))}
+                </div>
+              )}
+            </div>
+            {errors.selectedReason && touched.selectedReason && (
+              <p className="text-red-500 mt-1">{errors.selectedReason}</p>
             )}
           </div>
-          {errors.selectedReason && touched.selectedReason && (
-            <p className="text-red-500 mt-1">{errors.selectedReason}</p>
-          )}
-        </div>
+          <div className="mb-6">
+            <div className="mb-4">
+              <label htmlFor="refund_amount" className="block mb-1 text-base font-normal" style={{ textShadow: '0 0 0 #444444' }}>
+                Refund amount: {errors.refund_amount && <span className="text-red-500">{errors.refund_amount}</span>}
+              </label>
+              <input
+                type="number"
+                id="refund_amount"
+                name="refund_amount"
+                value={formData.refund_amount}
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
+              />
+            </div>
 
-        <div className="mb-6">
-          <div className="mb-4">
-            <label htmlFor="refund_amount" className="block mb-1 text-base font-normal" style={{ textShadow: '0 0 0 #444444' }}>
-              Refund amount: {errors.refund_amount && <span className="text-red-500">{errors.refund_amount}</span>}
-            </label>
-            <input
-              type="number"
-              id="refund_amount"
-              name="refund_amount"
-              value={formData.refund_amount}
-              onChange={handleInputChange}
-              onBlur={handleBlur}
-              className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
-            />
-          </div>
+            <div className="mb-4">
+              <label htmlFor="name" className="block mb-1 text-base font-normal" style={{ textShadow: '0 0 0 #444444' }}>
+                Name: {errors.name && <span className="text-red-500">{errors.name}</span>}
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                maxLength={50}
+                className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
+              />
+              <div className="text-left text-base mt-1 font-normal" style={{ textShadow: '0 0 0 #444444' }}>
+                {nameCharsRemaining} Characters Remaining
+              </div>
+            </div>
 
-          <div className="mb-4">
-            <label htmlFor="name" className="block mb-1 text-base font-normal" style={{ textShadow: '0 0 0 #444444' }}>
-              Name: {errors.name && <span className="text-red-500">{errors.name}</span>}
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-              onBlur={handleBlur}
-              maxLength={50}
-              className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
-            />
-            <div className="text-left text-base mt-1 font-normal" style={{ textShadow: '0 0 0 #444444' }}>
-              {nameCharsRemaining} Characters Remaining
+            <div className="mb-4">
+              <label htmlFor="email" className="block mb-1 text-base font-normal" style={{ textShadow: '0 0 0 #444444' }}>
+                Email Address: {errors.email && <span className="text-red-500">{errors.email}</span>}
+              </label>
+              <input
+                type="text"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="phone" className="block mb-1 text-base font-normal" style={{ textShadow: '0 0 0 #444444' }}>
+                Phone (e.g. 9998887777 or 19998887777):
+              </label>
+              <input
+                type="number"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
+              />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="comments" className="block text-base font-normal mb-4" style={{ textShadow: '0 0 0 #444444' }}>
+                Please provide us with your mailing address and any other relevant information:
+                {errors.comments && <span className="text-red-500">{errors.comments}</span>}
+              </label>
+              <textarea
+                id="comments"
+                name="comments"
+                value={formData.comments}
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                rows={6}
+                maxLength={500}
+                className="w-full p-3 ml-[2px] h-[166px] border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
+              />
+              <div className="text-left text-base" style={{ textShadow: '0 0 0 #444444' }}>
+                {commentCharsRemaining} Characters Remaining
+              </div>
             </div>
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="email" className="block mb-1 text-base font-normal" style={{ textShadow: '0 0 0 #444444' }}>
-              Email Address: {errors.email && <span className="text-red-500">{errors.email}</span>}
-            </label>
-            <input
-              type="text"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              onBlur={handleBlur}
-              className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
-            />
+          <div className="mt-8 text-sm text-white pl-8" style={{ textShadow: '0 0 0 #444444' }}>
+            SIID: 11918194 - JDEID: 0
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="phone" className="block mb-1 text-base font-normal" style={{ textShadow: '0 0 0 #444444' }}>
-              Phone (e.g. 9998887777 or 19998887777):
-            </label>
-            <input
-              type="number"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleInputChange}
-              className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
-            />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="comments" className="block text-base font-normal mb-4" style={{ textShadow: '0 0 0 #444444' }}>
-              Please provide us with your mailing address and any other relevant information:
-              {errors.comments && <span className="text-red-500">{errors.comments}</span>}
-            </label>
-            <textarea
-              id="comments"
-              name="comments"
-              value={formData.comments}
-              onChange={handleInputChange}
-              onBlur={handleBlur}
-              rows={6}
-              maxLength={500}
-              className="w-full p-3 ml-[2px] h-[166px] border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
-            />
-            <div className="text-left text-base" style={{ textShadow: '0 0 0 #444444' }}>
-              {commentCharsRemaining} Characters Remaining
-            </div>
+          <div className="mt-4 mb-4 flex justify-end">
+            <button
+              onClick={handleSubmit}
+              className="bg-white cursor-pointer text-black hover:bg-lime-300 font-bold rounded-2xl px-3 py-2 text-lg border border-black transition duration-300 ease-in-out bg-[#808080]focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
+            >
+              Submit
+            </button>
           </div>
         </div>
-
-        <div className="mt-8 text-sm text-white pl-8" style={{ textShadow: '0 0 0 #444444' }}>
-          SIID: 11918194 - JDEID: 0
-        </div>
-
-        <div className="mt-4 mb-4 flex justify-end">
-          <button
-            onClick={handleSubmit}
-            className="bg-white cursor-pointer text-black hover:bg-lime-300 font-bold rounded-2xl px-3 py-2 text-lg border border-black transition duration-300 ease-in-out bg-[#808080]focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
-          >
-            Submit
-          </button>
-        </div>
-      </div>
+      )}
     </div>
   );
 };

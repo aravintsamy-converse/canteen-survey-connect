@@ -44,7 +44,7 @@ const CanteenSurvay: React.FC = () => {
     setTimeout(() => {
       navigate(to);
       setIsLoading(false);
-    }, 100);
+    }, 0);
   };
 
   const handleOpenModal = (e: React.MouseEvent) => {
