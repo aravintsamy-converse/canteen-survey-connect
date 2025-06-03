@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useEqpId } from '../EquipmentIdContext';
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { usePrompt } from '../hooks/usePrompt';
 import { FaChevronCircleDown, FaChevronCircleUp } from "react-icons/fa";
 import { fetchCaseSubtypes, submitIssue } from "../services/issueService";
@@ -9,6 +9,7 @@ import SuccessModal from "../component/SuccessModal";
 
 const Refund = () => {
   const { eqpId } = useEqpId();
+  const navigate = useNavigate();
 
   // Check if eqpId is null, undefined, or empty
   if (!eqpId || eqpId === '') {
@@ -53,8 +54,8 @@ const Refund = () => {
   
     const handleCloseModal = () => {
       setIsModalOpen(false);
+      navigate(`/survey/home/${eqpId}`, { replace: true });
     };
-
 
   usePrompt(isFormDirty, 'This survey must be completed or all your results will be lost.\nDo you still wish to exit?');
 

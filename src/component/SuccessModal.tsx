@@ -40,7 +40,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose }) => {
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute hidden top-4 right-4 z-10 p-2 rounded-full bg-white/80 hover:bg-white transition-colors duration-200 shadow-lg"
+          className="absolute  top-4 right-4 z-10 p-2 rounded-full bg-white/80 hover:bg-white transition-colors duration-200 shadow-lg"
         >
           <X className="w-4 h-4 text-gray-600" />
         </button>

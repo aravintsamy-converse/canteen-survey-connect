@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useEqpId } from '../EquipmentIdContext';
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { usePrompt } from '../hooks/usePrompt';
 import { fetchCaseSubtypes, submitIssue } from '../services/issueService';
 import Loader from "../component/Loader";
@@ -9,6 +9,8 @@ import type { Issue } from "../type/issue";
 
 const MachineProblem = () => {
   const { eqpId } = useEqpId();
+  const navigate = useNavigate();
+
 
   // Check if eqpId is null, undefined, or empty
   if (!eqpId || eqpId === '') {
@@ -43,6 +45,7 @@ const MachineProblem = () => {
   
     const handleCloseModal = () => {
       setIsModalOpen(false);
+      navigate(`/survey/home/${eqpId}`, { replace: true });
     };
 
   usePrompt(isFormDirty, 'This survey must be completed or all your results will be lost.\n Do you still wish to exit?');
