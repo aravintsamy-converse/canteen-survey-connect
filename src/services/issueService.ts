@@ -1,5 +1,3 @@
-// src/services/issueService.ts
-
 import axios from 'axios';
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -24,7 +22,7 @@ interface SubmitIssuePayload {
     CaseType: {
       guid: string;
     };
-    RefundAmount: null;
+    RefundAmount: null | number;
   }>;
 }
 
@@ -32,7 +30,7 @@ export const fetchCaseSubtypes = async (issueType: string): Promise<Issue[]> => 
   try {
     // Replace with your actual API endpoint and logic
     const response = await axios.get(`${apiUrl}/case-subtypes?case_type=${issueType}`);
-    return response.data; // Assuming response.data is an array of { value: string, label: string }
+    return response.data; 
   } catch (error) {
     console.error('Error fetching case subtypes:', error);
     throw error;
@@ -40,10 +38,9 @@ export const fetchCaseSubtypes = async (issueType: string): Promise<Issue[]> => 
 };
 
 export const submitIssue = async (payload: SubmitIssuePayload): Promise<void> => {
-  console.log("🚀 ~ submitIssue ~ payload:", payload)
   try {
     // Replace with your actual API endpoint
-    await axios.post(`${apiUrl}/submit-issue`, payload, {
+    await axios.post(`${apiUrl}/${payload.ProblemType.POSProblem ? 'machine-problem' : 'need-refund'}`, payload, {
       headers: {
         'Content-Type': 'application/json',
       },

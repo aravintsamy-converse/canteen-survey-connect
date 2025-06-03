@@ -1,9 +1,10 @@
+import axios from 'axios';
 import type { EquipmentDetails } from "../pages/CanteenSurvay";
+const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
 export const fetchEquipmentDetails = async (
   eqpId: string
 ): Promise<EquipmentDetails | null> => {
-  const apiUrl = import.meta.env.VITE_API_BASE_URL;
   const url = `${apiUrl}/equipment-detail?canteenconnect_guid=${encodeURIComponent(
     eqpId
   )}`;
@@ -52,7 +53,6 @@ export const fetchEquipmentDetails = async (
 export const fetchMachineProblem = async (
   eqpId: string
 ): Promise<EquipmentDetails | null> => {
-  const apiUrl = import.meta.env.VITE_API_BASE_URL;
   const url = `${apiUrl}/equipment-detail?canteenconnect_guid=${encodeURIComponent(
     eqpId
   )}`;

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useEqpId } from '../EquipmentIdContext';
 import { Navigate } from "react-router-dom";
 import { usePrompt } from '../hooks/usePrompt';
 import { fetchCaseSubtypes, submitIssue } from '../services/issueService';
 import Loader from "../component/Loader";
+import SuccessModal from "../component/SuccessModal";
 
 interface Issue {
   value: string;
@@ -13,7 +13,6 @@ interface Issue {
 
 const MachineProblem = () => {
   const { eqpId } = useEqpId();
-  const navigate = useNavigate();
 
   // Check if eqpId is null, undefined, or empty
   if (!eqpId || eqpId === '') {
@@ -44,6 +43,11 @@ const MachineProblem = () => {
   const [isFormDirty, setIsFormDirty] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(true);
+  
+    const handleCloseModal = () => {
+      setIsModalOpen(false);
+    };
 
   usePrompt(isFormDirty, 'This survey must be completed or all your results will be lost.\n Do you still wish to exit?');
 
@@ -182,8 +186,8 @@ const MachineProblem = () => {
       // Construct the payload in the desired format
       const payload = {
         ProblemType: {
-          POSProblem: true, // Set to true for machine-problem page
-          Refund: false, // Always false for machine-problem
+          POSProblem: true,
+          Refund: false, 
         },
         ConnectLocationNumber: eqpId, // Assuming eqpId is the ConnectLocationNumber
         ProblemDescription: formData.comments || null, // Use comments or fallback
@@ -206,10 +210,8 @@ const MachineProblem = () => {
       try {
         // Call the API to submit the issue
         await submitIssue(payload);
-        console.log('Form submitted:', payload);
-        alert('Form submitted successfully!');
         setIsFormDirty(false);
-        navigate("/survey/success");
+        setIsModalOpen(true);
       } catch (error) {
         setApiError('Failed to submit the form. Please try again.');
       } finally {
@@ -342,7 +344,10 @@ const MachineProblem = () => {
           </div>
         </div>
       )}
-
+         <SuccessModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 };

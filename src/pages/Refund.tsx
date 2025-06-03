@@ -3,8 +3,9 @@ import { useEqpId } from '../EquipmentIdContext';
 import { Navigate } from "react-router-dom";
 import { usePrompt } from '../hooks/usePrompt';
 import { FaChevronCircleDown, FaChevronCircleUp } from "react-icons/fa";
-import { fetchCaseSubtypes } from "../services/issueService";
+import { fetchCaseSubtypes, submitIssue } from "../services/issueService";
 import Loader from "../component/Loader";
+import SuccessModal from "../component/SuccessModal";
 
 const Refund = () => {
   const { eqpId } = useEqpId();
@@ -48,6 +49,11 @@ const Refund = () => {
   const [refundReasonOptions, setRefundReasonOptions] = useState<{ value: string; label: string }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(true);
+  
+    const handleCloseModal = () => {
+      setIsModalOpen(false);
+    };
 
 
   usePrompt(isFormDirty, 'This survey must be completed or all your results will be lost.\nDo you still wish to exit?');
@@ -224,14 +230,48 @@ const Refund = () => {
     return isValid;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validateForm()) {
-      console.log('Form submitted:', formData, 'eqpId', eqpId);
-      alert('Form submitted successfully!');
-      setIsFormDirty(false); // Reset dirty state after successful submission
-    }
-  };
+  const handleSubmit = async (e: React.FormEvent) => {
+     e.preventDefault();
+     if (validateForm()) {
+       // Construct the payload in the desired format
+       const payload = {
+         ProblemType: {
+           POSProblem: false, 
+           Refund: true,
+         },
+         ConnectLocationNumber: eqpId, // Assuming eqpId is the ConnectLocationNumber
+         ProblemDescription: formData.comments || null, // Use comments or fallback
+         RequesterDetails: {
+           Name: formData.name.trim(),
+           Email: formData.email.trim(),
+           Phone: formData.phone || '', // Phone is optional
+         },
+         Incidents: [
+          {
+            CaseType: {
+              guid: formData.selectedReason, // Use selectedReason as the guid
+            },
+            RefundAmount: parseFloat(formData.refund_amount) || null, // Convert refund_amount to number
+          },
+        ],
+       };
+ 
+       setIsLoading(true);
+       setApiError(null);
+ 
+       try {
+         // Call the API to submit the issue
+         await submitIssue(payload);
+         setIsFormDirty(false);
+         setIsModalOpen(true);
+        //  navigate("/survey/success");
+       } catch (error) {
+         setApiError('Failed to submit the form. Please try again.');
+       } finally {
+         setIsLoading(false);
+       }
+     }
+   };
 
   const getSelectedLabel = () => {
     const selected = refundReasonOptions.find(option => option.value === formData.selectedReason);
@@ -384,6 +424,10 @@ const Refund = () => {
           </div>
         </div>
       )}
+      <SuccessModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 };
