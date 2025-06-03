@@ -39,7 +39,7 @@ const MachineProblem = () => {
   const [isFormDirty, setIsFormDirty] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
     const handleCloseModal = () => {
       setIsModalOpen(false);

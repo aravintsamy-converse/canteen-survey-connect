@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react'
-
-interface LocationModalProps {
-  isOpen: boolean
-  onClose: () => void
-  onSubmit: (location: string) => void
-}
-
+import type { LocationModalProps } from '../type/issue'
 const LocationModal: React.FC<LocationModalProps> = ({ isOpen, onClose, onSubmit }) => {
   const [location, setLocation] = useState('')
   const [isAnimating, setIsAnimating] = useState(false)

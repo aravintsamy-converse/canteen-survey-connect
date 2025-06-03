@@ -22,3 +22,14 @@ export interface SubmitIssuePayload {
     RefundAmount: null | number;
   }>;
 }
+
+export interface SuccessModalProps {
+  isOpen: boolean
+  onClose: () => void
+}
+
+export interface LocationModalProps {
+  isOpen: boolean
+  onClose: () => void
+  onSubmit: (location: string) => void
+}

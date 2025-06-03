@@ -49,7 +49,7 @@ const Refund = () => {
   const [refundReasonOptions, setRefundReasonOptions] = useState<{ value: string; label: string }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
     const handleCloseModal = () => {
       setIsModalOpen(false);
