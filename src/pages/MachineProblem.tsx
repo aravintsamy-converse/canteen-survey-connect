@@ -345,7 +345,7 @@ const MachineProblem = () => {
          <SuccessModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        message="Your issue has been submitted successfully. Thank you for your feedback!"
+        message="Your machine issue case has been created."
       />
     </div>
   );

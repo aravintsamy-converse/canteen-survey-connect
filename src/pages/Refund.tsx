@@ -428,7 +428,7 @@ const Refund = () => {
       <SuccessModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        message="Your refund request has been submitted successfully. We will get back to you shortly."
+        message="Your refund request has been submitted"
       />
     </div>
   );
