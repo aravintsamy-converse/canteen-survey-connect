@@ -5,11 +5,7 @@ import { usePrompt } from '../hooks/usePrompt';
 import { fetchCaseSubtypes, submitIssue } from '../services/issueService';
 import Loader from "../component/Loader";
 import SuccessModal from "../component/SuccessModal";
-
-interface Issue {
-  value: string;
-  label: string;
-}
+import type { Issue } from "../type/issue";
 
 const MachineProblem = () => {
   const { eqpId } = useEqpId();

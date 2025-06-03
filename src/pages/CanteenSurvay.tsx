@@ -5,14 +5,7 @@ import { FaChevronCircleRight } from 'react-icons/fa';
 import { useEqpId } from '../EquipmentIdContext';
 import Loader from '../component/Loader';
 import { fetchEquipmentDetails } from '../services/equipmentService';
-
-export interface EquipmentDetails {
-  name: string;
-  address1_line1: string;
-  address1_city: string;
-  address1_stateorprovince: string;
-  address1_postalcode: string;
-}
+import type { EquipmentDetails } from '../type/equipment';
 
 const CanteenSurvay: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

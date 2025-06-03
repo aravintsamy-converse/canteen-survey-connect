@@ -1,9 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-
-interface EquipmentContextType {
-  eqpId: string;
-  setEqpId: (eqpId: string) => void;
-}
+import type { EquipmentContextType } from './type/equipment';
 
 const EquipmentIdContext = createContext<EquipmentContextType | undefined>(undefined);
 
