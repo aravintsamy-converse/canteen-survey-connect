@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useEqpId } from '../EquipmentIdContext';
 import { Navigate } from "react-router-dom";
 import { usePrompt } from '../hooks/usePrompt';
-import { fetchCaseSubtypes } from '../services/issueService';
+import { fetchCaseSubtypes, submitIssue } from '../services/issueService';
 import Loader from "../component/Loader";
 
 interface Issue {
@@ -176,14 +176,45 @@ const MachineProblem = () => {
     return isValid;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+ const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log('Form submitted:', formData);
-      console.log('Selected issue values:', formData.issues); // Log selected issue values
-      alert('Form submitted successfully!');
-      setIsFormDirty(false);
-      navigate("/survey/success"); // Navigate to a success page after submission
+      // Construct the payload in the desired format
+      const payload = {
+        ProblemType: {
+          POSProblem: true, // Set to true for machine-problem page
+          Refund: false, // Always false for machine-problem
+        },
+        ConnectLocationNumber: eqpId, // Assuming eqpId is the ConnectLocationNumber
+        ProblemDescription: formData.comments || null, // Use comments or fallback
+        RequesterDetails: {
+          Name: formData.name.trim(),
+          Email: formData.email.trim(),
+          Phone: formData.phone || '', // Phone is optional
+        },
+        Incidents: formData.issues.map((issueGuid) => ({
+          CaseType: {
+            guid: issueGuid, // Map selected issue values (guids) to CaseType
+          },
+          RefundAmount: null, // Always null for machine-problem
+        })),
+      };
+
+      setIsLoading(true);
+      setApiError(null);
+
+      try {
+        // Call the API to submit the issue
+        await submitIssue(payload);
+        console.log('Form submitted:', payload);
+        alert('Form submitted successfully!');
+        setIsFormDirty(false);
+        navigate("/survey/success");
+      } catch (error) {
+        setApiError('Failed to submit the form. Please try again.');
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -192,11 +223,9 @@ const MachineProblem = () => {
       {isLoading ? <Loader /> : (
         <div className="mx-auto">
           <h1 className="text-[22px] font-[700] text-white">Machine Problem?</h1>
-          {isLoading ? (
-            <p>Loading issues...</p>
-          ) : apiError ? (
-            <p className="text-red-500">{apiError}</p>
-          ) : (
+          <p className="text-[16px] font-[400] text-white mb-4" style={{ textShadow: '0 0 0 #444444' }}>
+            {!apiError && <span className="text-red-500">{apiError}</span>}
+          </p>
             <div className="pt-[58px]  mb-6">
               <p className="font-[400] text-[16px] mb-0" style={{ textShadow: '0 0 0 #444444' }}>
                 Choose all issues that apply:
@@ -228,7 +257,6 @@ const MachineProblem = () => {
               </div>
               {errors.issues && <p className="text-red-500 mt-1">{errors.issues}</p>}
             </div>
-          )}
 
           <div className="mb-3">
             <label htmlFor="comments" className="block text-[16px] font-[400] mb-4" style={{ textShadow: '0 0 0 #444444' }}>
