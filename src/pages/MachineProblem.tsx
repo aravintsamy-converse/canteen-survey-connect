@@ -42,10 +42,19 @@ const MachineProblem = () => {
   const [apiError, setApiError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   
+    // const handleCloseModal = () => {
+    //   setIsModalOpen(false);
+    //   navigate(`/survey/home/${eqpId}`, { replace: true });
+    // };
+
     const handleCloseModal = () => {
-      setIsModalOpen(false);
+    setIsModalOpen(false);
+    if (!apiError) {
+      // Only navigate back on success, not on error
       navigate(`/survey/home/${eqpId}`, { replace: true });
-    };
+    }
+  };
+
 
   usePrompt(isFormDirty, 'This survey must be completed or all your results will be lost.\n Do you still wish to exit?');
 
@@ -212,6 +221,7 @@ const MachineProblem = () => {
         setIsModalOpen(true);
       } catch (error) {
         setApiError('Failed to submit the form. Please try again.');
+        setIsModalOpen(true); // Open modal on error
       } finally {
         setIsLoading(false);
       }
@@ -329,9 +339,6 @@ const MachineProblem = () => {
               />
             </div>
           </div>
-          <div className="mt-8 text-sm text-white text-[14px] font-[400] pl-8" style={{ textShadow: '0 0 0 #444444' }}>
-            SIID: 11900606 - JDEID: 0
-          </div>
           <div className="mt-4 mb-4 flex justify-end">
             <button
               onClick={handleSubmit}
@@ -342,10 +349,11 @@ const MachineProblem = () => {
           </div>
         </div>
       )}
-         <SuccessModal
+        <SuccessModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         message="Your machine issue case has been created."
+        errorMessage={apiError} // Pass apiError to the modal
       />
     </div>
   );

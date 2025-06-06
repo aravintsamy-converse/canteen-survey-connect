@@ -51,11 +51,15 @@ const Refund = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
-    const handleCloseModal = () => {
-      setIsModalOpen(false);
+
+
+     const handleCloseModal = () => {
+    setIsModalOpen(false);
+    if (!apiError) {
+      // Only navigate back on success, not on error
       navigate(`/survey/home/${eqpId}`, { replace: true });
-    };
+    }
+  };
 
   usePrompt(isFormDirty, 'This survey must be completed or all your results will be lost.\nDo you still wish to exit?');
 
@@ -267,7 +271,8 @@ const Refund = () => {
          setIsModalOpen(true);
         //  navigate("/survey/success");
        } catch (error) {
-         setApiError('Failed to submit the form. Please try again.');
+        setApiError('Failed to submit the form. Please try again.');
+        setIsModalOpen(true); // Open modal on error
        } finally {
          setIsLoading(false);
        }
@@ -285,11 +290,6 @@ const Refund = () => {
       {isLoading ? <Loader /> : (
         <div className=" mx-auto">
           <h1 className="text-[22px] font-bold text-white">Need a Refund?</h1>
-          {apiError && (
-            <div className="text-red-500 mb-4">
-              {apiError}
-            </div>
-          )}
           <div className="pt-10 mb-6">
             <label htmlFor="refund_amount" className="block mb-2 text-base font-normal" style={{ textShadow: '0 0 0 #444444' }}>
               Please select a reason for a refund:{errors.selectedReason && <span className="text-red-500">{errors.selectedReason}</span>}
@@ -410,11 +410,6 @@ const Refund = () => {
               </div>
             </div>
           </div>
-
-          <div className="mt-8 text-sm text-white pl-8" style={{ textShadow: '0 0 0 #444444' }}>
-            SIID: 11918194 - JDEID: 0
-          </div>
-
           <div className="mt-4 mb-4 flex justify-end">
             <button
               onClick={handleSubmit}
@@ -428,7 +423,8 @@ const Refund = () => {
       <SuccessModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        message="Your refund request has been submitted"
+        message="Your machine issue case has been created."
+        errorMessage={apiError} // Pass apiError to the modal
       />
     </div>
   );

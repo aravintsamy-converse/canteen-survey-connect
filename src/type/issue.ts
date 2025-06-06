@@ -27,6 +27,7 @@ export interface SuccessModalProps {
   isOpen: boolean
   onClose: () => void
   message: string
+  errorMessage?: string | null
 }
 
 export interface LocationModalProps {
