@@ -3,26 +3,14 @@ import { MdHome } from 'react-icons/md';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useEqpId } from '../EquipmentIdContext';
 
-interface LayoutProps {
-  setIsNavigating: (isNavigating: boolean) => void;
-}
-
-const Layout: React.FC<LayoutProps> = ({ setIsNavigating }) => {
+const Layout: React.FC = () => {
   const location = useLocation();
   const { eqpId } = useEqpId();
   const navigate = useNavigate();
 
-
   const handleNavigation = (to: string) => {
-    setIsNavigating(true);
     navigate(to);
-
-    // Simulate loading delay (remove this in production or adjust as needed)
-    setTimeout(() => {
-      setIsNavigating(false);
-    }, 100);
   };
-
 
   return (
     <div className="flex flex-col min-h-screen">

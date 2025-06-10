@@ -35,26 +35,17 @@ const MachineProblem = () => {
     name: false,
     email: false,
   });
-  const [commentCharsRemaining, setCommentCharsRemaining] = useState(1000);
-  const [nameCharsRemaining, setNameCharsRemaining] = useState(50);
   const [isFormDirty, setIsFormDirty] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
-    // const handleCloseModal = () => {
-    //   setIsModalOpen(false);
-    //   navigate(`/survey/home/${eqpId}`, { replace: true });
-    // };
 
     const handleCloseModal = () => {
     setIsModalOpen(false);
     if (!apiError) {
-      // Only navigate back on success, not on error
       navigate(`/survey/home/${eqpId}`, { replace: true });
     }
   };
-
 
   usePrompt(isFormDirty, 'This survey must be completed or all your results will be lost.\n Do you still wish to exit?');
 
@@ -89,12 +80,6 @@ const MachineProblem = () => {
   useEffect(() => {
     setIsFormDirty(checkFormDirty());
   }, [formData]);
-
-  // Update character counts
-  useEffect(() => {
-    setCommentCharsRemaining(1000 - formData.comments.length);
-    setNameCharsRemaining(50 - formData.name.length);
-  }, [formData.comments, formData.name]);
 
   const handleIssueChange = (issueValue: string) => {
     setFormData((prev) => {
@@ -282,7 +267,7 @@ const MachineProblem = () => {
               className="w-full p-3 ml-[2px] h-[166px] border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
             />
             <div className="text-left text-[16px]" style={{ textShadow: '0 0 0 #444444' }}>
-              {commentCharsRemaining} Characters Remaining
+              {1000 - formData.comments.length} Characters Remaining
             </div>
           </div>
 
@@ -306,7 +291,7 @@ const MachineProblem = () => {
                 className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
               />
               <div className="text-left text-[16px] mt-1 font-[400]" style={{ textShadow: '0 0 0 #444444' }}>
-                {nameCharsRemaining} Characters Remaining
+                {50 - formData.name.length} Characters Remaining
               </div>
             </div>
 

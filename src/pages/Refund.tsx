@@ -43,8 +43,6 @@ const Refund = () => {
   });
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [commentCharsRemaining, setCommentCharsRemaining] = useState(500);
-  const [nameCharsRemaining, setNameCharsRemaining] = useState(50);
   const [isFormDirty, setIsFormDirty] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null)
   const [refundReasonOptions, setRefundReasonOptions] = useState<{ value: string; label: string }[]>([]);
@@ -53,7 +51,7 @@ const Refund = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
 
-     const handleCloseModal = () => {
+  const handleCloseModal = () => {
     setIsModalOpen(false);
     if (!apiError) {
       // Only navigate back on success, not on error
@@ -146,11 +144,6 @@ const Refund = () => {
     validateField(name as keyof typeof errors, value as string);;
   };
 
-  useEffect(() => {
-    setCommentCharsRemaining(500 - formData.comments.length);
-    setNameCharsRemaining(50 - formData.name.length);
-  }, [formData.comments, formData.name]);
-
   const validateField = (name: string, value: string) => {
     let errorMessage = '';
 
@@ -236,22 +229,22 @@ const Refund = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-     e.preventDefault();
-     if (validateForm()) {
-       // Construct the payload in the desired format
-       const payload = {
-         ProblemType: {
-           POSProblem: false, 
-           Refund: true,
-         },
-         ConnectLocationNumber: eqpId, // Assuming eqpId is the ConnectLocationNumber
-         ProblemDescription: formData.comments || null, // Use comments or fallback
-         RequesterDetails: {
-           Name: formData.name.trim(),
-           Email: formData.email.trim(),
-           Phone: formData.phone || '', // Phone is optional
-         },
-         Incidents: [
+    e.preventDefault();
+    if (validateForm()) {
+      // Construct the payload in the desired format
+      const payload = {
+        ProblemType: {
+          POSProblem: false,
+          Refund: true,
+        },
+        ConnectLocationNumber: eqpId, // Assuming eqpId is the ConnectLocationNumber
+        ProblemDescription: formData.comments || null, // Use comments or fallback
+        RequesterDetails: {
+          Name: formData.name.trim(),
+          Email: formData.email.trim(),
+          Phone: formData.phone || '', // Phone is optional
+        },
+        Incidents: [
           {
             CaseType: {
               guid: formData.selectedReason, // Use selectedReason as the guid
@@ -259,25 +252,25 @@ const Refund = () => {
             RefundAmount: parseFloat(formData.refund_amount) || null, // Convert refund_amount to number
           },
         ],
-       };
- 
-       setIsLoading(true);
-       setApiError(null);
- 
-       try {
-         // Call the API to submit the issue
-         await submitIssue(payload);
-         setIsFormDirty(false);
-         setIsModalOpen(true);
+      };
+
+      setIsLoading(true);
+      setApiError(null);
+
+      try {
+        // Call the API to submit the issue
+        await submitIssue(payload);
+        setIsFormDirty(false);
+        setIsModalOpen(true);
         //  navigate("/survey/success");
-       } catch (error) {
+      } catch (error) {
         setApiError('Failed to submit the form. Please try again.');
         setIsModalOpen(true); // Open modal on error
-       } finally {
-         setIsLoading(false);
-       }
-     }
-   };
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
 
   const getSelectedLabel = () => {
     const selected = refundReasonOptions.find(option => option.value === formData.selectedReason);
@@ -357,7 +350,7 @@ const Refund = () => {
                 className="w-full p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
               />
               <div className="text-left text-base mt-1 font-normal" style={{ textShadow: '0 0 0 #444444' }}>
-                {nameCharsRemaining} Characters Remaining
+                {50 - formData.name.length} Characters Remaining
               </div>
             </div>
 
@@ -406,7 +399,7 @@ const Refund = () => {
                 className="w-full p-3 ml-[2px] h-[166px] border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
               />
               <div className="text-left text-base" style={{ textShadow: '0 0 0 #444444' }}>
-                {commentCharsRemaining} Characters Remaining
+                {500 - formData.comments.length} Characters Remaining
               </div>
             </div>
           </div>

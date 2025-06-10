@@ -17,9 +17,10 @@ const CanteenSurvay: React.FC = () => {
       setIsLoading(true);
       try {
         const details = await fetchEquipmentDetails(eqpId);
-        setEquipmentDetails(details);
         if (!details) {
           navigate('/survey/not-found', { replace: true });
+        } else {
+          setEquipmentDetails(details);
         }
       } catch (error) {
         console.error("Error in loadEquipmentDetails:", error);
@@ -36,10 +37,7 @@ const CanteenSurvay: React.FC = () => {
 
   const handleNavigation = (to: string) => {
     setIsLoading(true);
-    setTimeout(() => {
-      navigate(to);
-      setIsLoading(false);
-    }, 0);
+    navigate(to);
   };
 
   return (

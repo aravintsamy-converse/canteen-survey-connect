@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import CanteenSurvay from './pages/CanteenSurvay';
 import MachineProblem from './pages/MachineProblem';
@@ -6,8 +6,6 @@ import Refund from './pages/Refund';
 import PageNotFound from './pages/PageNotFound';
 import Layout from './component/Layout';
 import { EquipmentIdProvider, useEqpId } from './EquipmentIdContext';
-import Loader from './component/Loader';
-
 
 // Component to extract GUID and set it in context
 const GuidExtractor: React.FC = () => {
@@ -23,15 +21,12 @@ const GuidExtractor: React.FC = () => {
   return <CanteenSurvay />;
 };
 function App() {
-  const [isNavigating, setIsNavigating] = useState(false);
 
   return (
     <EquipmentIdProvider>
       <Router>
-      {isNavigating && <Loader />}
-
         <Routes>
-        <Route element={<Layout setIsNavigating={setIsNavigating} />}>
+        <Route element={<Layout />}>
         <Route path="/survey/home/:id" element={<GuidExtractor />} />
             <Route path="/survey/machine-problem" element={<MachineProblem />} />
             <Route path="/survey/need-refund" element={<Refund />} />
