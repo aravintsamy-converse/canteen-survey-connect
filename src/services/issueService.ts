@@ -1,6 +1,16 @@
 import axios from 'axios';
 import type { Issue, SubmitIssuePayload } from '../type/issue';
-  const apiUrl = import.meta.env.VITE_API_BASE_URL;
+import { getRuntimeConfig } from '../utils/config';
+
+let apiUrl: string = ''; 
+
+const init = async () => {
+  const config = await getRuntimeConfig(); 
+  apiUrl = config.API_URL;       
+  console.log('API URL:', apiUrl);
+};
+
+init();
 
 export const fetchCaseSubtypes = async (issueType: string): Promise<Issue[]> => {
   try {

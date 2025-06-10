@@ -1,8 +1,16 @@
 import axios from 'axios';
 import type { EquipmentDetails } from '../type/equipment';
+import { getRuntimeConfig } from '../utils/config';
 
-const apiUrl = import.meta.env.VITE_API_BASE_URL;
+let apiUrl: string = ''; 
 
+const init = async () => {
+  const config = await getRuntimeConfig(); 
+  apiUrl = config.API_URL;     
+  console.log('API URL:', apiUrl);
+};
+
+init();
 export const fetchEquipmentDetails = async (
   eqpId: string
 ): Promise<EquipmentDetails | null> => {
