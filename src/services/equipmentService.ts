@@ -15,10 +15,8 @@ export const fetchEquipmentDetails = async (
       },
     });
 
-    // Ensure data.value exists and has at least one item
     const parsedData = response.data.value?.[0]?.msdyn_account || {};
 
-    // Destructure with default values
     const {
       name = "Unknown Equipment",
       address1_line1 = "Unknown Address",

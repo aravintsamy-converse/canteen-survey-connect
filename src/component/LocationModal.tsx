@@ -32,9 +32,8 @@ const LocationModal: React.FC<LocationModalProps> = ({ isOpen, onClose, onSubmit
   return (
     <div className="fixed inset-0 backdrop-brightness-60 flex items-center justify-center z-50">
       <div
-        className={`bg-[#808080] rounded-lg p-4 w-full max-w-sm ${
-          isAnimating ? 'animate-slide-in-zoom' : 'animate-slide-out-zoom'
-        }`}
+        className={`bg-[#808080] rounded-lg p-4 w-full max-w-sm ${isAnimating ? 'animate-slide-in-zoom' : 'animate-slide-out-zoom'
+          }`}
         onAnimationEnd={handleAnimationEnd}
       >
         <div className="flex justify-between items-center  pb-2">

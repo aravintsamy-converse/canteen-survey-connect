@@ -64,7 +64,6 @@ const Layout: React.FC = () => {
           </div>
         </div>
       </footer>
-
     </div>
   );
 };

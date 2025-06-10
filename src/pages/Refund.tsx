@@ -11,7 +11,6 @@ const Refund = () => {
   const { eqpId } = useEqpId();
   const navigate = useNavigate();
 
-  // Check if eqpId is null, undefined, or empty
   if (!eqpId || eqpId === '') {
     return <Navigate to="/survey/not-found" replace />;
   }
@@ -54,14 +53,12 @@ const Refund = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     if (!apiError) {
-      // Only navigate back on success, not on error
       navigate(`/survey/home/${eqpId}`, { replace: true });
     }
   };
 
   usePrompt(isFormDirty, 'This survey must be completed or all your results will be lost.\nDo you still wish to exit?');
 
-  // Check if form is dirty (i.e., has been modified)
   const checkFormDirty = () => {
     return (
       formData.refund_amount !== '' ||
@@ -77,7 +74,7 @@ const Refund = () => {
     const loadIssues = async () => {
       setIsLoading(true);
       setApiError(null);
-      const issues = await fetchCaseSubtypes('refund'); // Assuming 'equipment_issue' is the issue type
+      const issues = await fetchCaseSubtypes('refund');
       if (issues.length > 0) {
         setRefundReasonOptions(issues);
       } else {
@@ -101,7 +98,6 @@ const Refund = () => {
     }
   }, [])
 
-  // Update isFormDirty whenever formData changes
   useEffect(() => {
     setIsFormDirty(checkFormDirty());
   }, [formData]);
@@ -182,7 +178,6 @@ const Refund = () => {
     return !errorMessage;
   };
 
-  // Validate form
   const validateForm = () => {
     let isValid = true;
     const newErrors = {
@@ -231,25 +226,24 @@ const Refund = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      // Construct the payload in the desired format
       const payload = {
         ProblemType: {
           POSProblem: false,
           Refund: true,
         },
-        ConnectLocationNumber: eqpId, // Assuming eqpId is the ConnectLocationNumber
-        ProblemDescription: formData.comments || null, // Use comments or fallback
+        ConnectLocationNumber: eqpId,
+        ProblemDescription: formData.comments || null,
         RequesterDetails: {
           Name: formData.name.trim(),
           Email: formData.email.trim(),
-          Phone: formData.phone || '', // Phone is optional
+          Phone: formData.phone || '',
         },
         Incidents: [
           {
             CaseType: {
-              guid: formData.selectedReason, // Use selectedReason as the guid
+              guid: formData.selectedReason,
             },
-            RefundAmount: parseFloat(formData.refund_amount) || null, // Convert refund_amount to number
+            RefundAmount: parseFloat(formData.refund_amount) || null,
           },
         ],
       };
@@ -258,14 +252,12 @@ const Refund = () => {
       setApiError(null);
 
       try {
-        // Call the API to submit the issue
         await submitIssue(payload);
         setIsFormDirty(false);
         setIsModalOpen(true);
-        //  navigate("/survey/success");
       } catch (error) {
         setApiError('Failed to submit the form. Please try again.');
-        setIsModalOpen(true); // Open modal on error
+        setIsModalOpen(true); 
       } finally {
         setIsLoading(false);
       }
@@ -417,7 +409,7 @@ const Refund = () => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         message="Your machine issue case has been created."
-        errorMessage={apiError} // Pass apiError to the modal
+        errorMessage={apiError}
       />
     </div>
   );

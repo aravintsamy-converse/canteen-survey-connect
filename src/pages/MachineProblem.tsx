@@ -11,7 +11,6 @@ const MachineProblem = () => {
   const { eqpId } = useEqpId();
   const navigate = useNavigate();
 
-  // Check if eqpId is null, undefined, or empty
   if (!eqpId || eqpId === '') {
     return <Navigate to="/survey/not-found" replace />;
   }
@@ -22,7 +21,7 @@ const MachineProblem = () => {
     email: '',
     phone: '',
     comments: '',
-    issues: [] as string[], // Store selected issue values
+    issues: [] as string[], 
   });
 
   const [issuesList, setIssuesList] = useState<Issue[]>([]);
@@ -49,7 +48,6 @@ const MachineProblem = () => {
 
   usePrompt(isFormDirty, 'This survey must be completed or all your results will be lost.\n Do you still wish to exit?');
 
-  // Fetch issues from API
   useEffect(() => {
     const loadIssues = async () => {
       setIsLoading(true);
@@ -65,7 +63,6 @@ const MachineProblem = () => {
     loadIssues();
   }, []);
 
-  // Check if form is dirty
   const checkFormDirty = () => {
     return (
       formData.name !== '' ||
@@ -76,7 +73,6 @@ const MachineProblem = () => {
     );
   };
 
-  // Update isFormDirty whenever formData changes
   useEffect(() => {
     setIsFormDirty(checkFormDirty());
   }, [formData]);
@@ -175,38 +171,36 @@ const MachineProblem = () => {
  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      // Construct the payload in the desired format
       const payload = {
         ProblemType: {
           POSProblem: true,
           Refund: false, 
         },
-        ConnectLocationNumber: eqpId, // Assuming eqpId is the ConnectLocationNumber
-        ProblemDescription: formData.comments || null, // Use comments or fallback
+        ConnectLocationNumber: eqpId, 
+        ProblemDescription: formData.comments || null,
         RequesterDetails: {
           Name: formData.name.trim(),
           Email: formData.email.trim(),
-          Phone: formData.phone || '', // Phone is optional
+          Phone: formData.phone || '',
         },
         Incidents: formData.issues.map((issueGuid) => ({
           CaseType: {
-            guid: issueGuid, // Map selected issue values (guids) to CaseType
+            guid: issueGuid,
           },
-          RefundAmount: null, // Always null for machine-problem
+          RefundAmount: null,
         })),
       };
 
       setIsLoading(true);
       setApiError(null);
 
-      try {
-        // Call the API to submit the issue
+      try {    
         await submitIssue(payload);
         setIsFormDirty(false);
         setIsModalOpen(true);
       } catch (error) {
         setApiError('Failed to submit the form. Please try again.');
-        setIsModalOpen(true); // Open modal on error
+        setIsModalOpen(true);
       } finally {
         setIsLoading(false);
       }
@@ -338,7 +332,7 @@ const MachineProblem = () => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         message="Your machine issue case has been created."
-        errorMessage={apiError} // Pass apiError to the modal
+        errorMessage={apiError}
       />
     </div>
   );

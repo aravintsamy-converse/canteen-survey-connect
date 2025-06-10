@@ -4,7 +4,6 @@ import type { Issue, SubmitIssuePayload } from '../type/issue';
 
 export const fetchCaseSubtypes = async (issueType: string): Promise<Issue[]> => {
   try {
-    // Replace with your actual API endpoint and logic
     const response = await axios.get(`${apiUrl}/case-subtypes?case_type=${issueType}`);
     return response.data; 
   } catch (error) {
@@ -15,7 +14,6 @@ export const fetchCaseSubtypes = async (issueType: string): Promise<Issue[]> => 
 
 export const submitIssue = async (payload: SubmitIssuePayload): Promise<void> => {
   try {
-    // Replace with your actual API endpoint
     await axios.post(`${apiUrl}/${payload.ProblemType.POSProblem ? 'machine-problem' : 'need-refund'}`, payload, {
       headers: {
         'Content-Type': 'application/json',

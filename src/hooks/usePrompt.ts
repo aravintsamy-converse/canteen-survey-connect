@@ -5,7 +5,6 @@ import {
   UNSAFE_NavigationContext as NavigationContext,
 } from 'react-router-dom';
 
-
 export function usePrompt(when: boolean, message: string) {
   const navigator = useContext(NavigationContext).navigator as Navigator;
 
@@ -14,7 +13,7 @@ export function usePrompt(when: boolean, message: string) {
 
     const push = navigator.push;
     const replace = navigator.replace;
-
+    
     const confirm = (method: typeof push) => {
       return (...args: Parameters<typeof push>) => {
         const confirmLeave = window.confirm(message);

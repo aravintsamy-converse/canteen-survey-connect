@@ -7,9 +7,8 @@ import PageNotFound from './pages/PageNotFound';
 import Layout from './component/Layout';
 import { EquipmentIdProvider, useEqpId } from './EquipmentIdContext';
 
-// Component to extract GUID and set it in context
 const GuidExtractor: React.FC = () => {
-  const { id } = useParams<{ id: string }>(); // Changed from equpmentId to guid
+  const { id } = useParams<{ id: string }>();
   const { setEqpId } = useEqpId();
 
   React.useEffect(() => {

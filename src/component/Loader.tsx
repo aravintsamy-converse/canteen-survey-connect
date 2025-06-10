@@ -9,8 +9,8 @@ const Loader: React.FC = () => {
             className="w-10 h-10  rounded-full animate-spin-custom"
             style={{
               background: 'conic-gradient(from 0deg, rgba(156, 163, 175, 1) 0%, rgba(156, 163, 175, 0.1) 100%)',
-              clipPath: 'circle(50% at 50% 50%)', // Outer circle
-              WebkitMask: 'radial-gradient(circle at 50% 50%, transparent 50%, black 60%)', // Hollow center, thicker ring
+              clipPath: 'circle(50% at 50% 50%)',
+              WebkitMask: 'radial-gradient(circle at 50% 50%, transparent 50%, black 60%)',
             }}
           ></div>
         </div>
