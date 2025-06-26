@@ -113,7 +113,7 @@ const NutritionInformation = () => {
     <>
       {isLoading ? <Loader /> : (
         <div className="min-h-[calc(100vh-116px)] flex flex-col justify-between items-center">
-          <div className="flex justify-center items-center px-1 w-full md:w-[63%]">
+          <div className="flex justify-center items-center px-1 w-full lg:w-[63%]">
             <div className="text-white w-full mt-4">
               <div className="bg-white p-6 rounded-0 shadow mb-4 flex items-center justify-between">
                 <div className="text-xl md:text-2xl text-black font-bold">Nutrition Information</div>
@@ -131,7 +131,7 @@ const NutritionInformation = () => {
                       value={searchQuery}
                       onChange={handleInputChange}
                       maxLength={50}
-                      className="w-full md:w-[50%] p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
+                      className="w-full lg:w-[50%] p-2 border border-[#464646] rounded-[12px] bg-[#808080] focus:outline-none focus:ring-0 focus:ring-[#464646] focus:shadow-[0_0_12px_#92ae1f]"
                     />
                     <div className="text-left text-[16px] mt-1 font-[400]" style={{ textShadow: '0 0 0 #444444' }}>
                       {50 - searchQuery.length} Characters Remaining
