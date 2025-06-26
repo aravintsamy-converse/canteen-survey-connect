@@ -98,7 +98,7 @@ const NutritionInformation = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-78px)] flex flex-col justify-between items-center">
+    <div className="min-h-[calc(100vh-116px)] flex flex-col justify-between items-center">
       <div className="flex justify-center items-center px-1 w-full md:w-[63%]">
         <div className="text-white w-full mt-4">
           <div className="bg-white p-6 rounded-0 shadow mb-4 flex items-center justify-between">
@@ -133,16 +133,18 @@ const NutritionInformation = () => {
             {/* Search Results - shown only in results view */}
             {viewState === 'results' && (
               searchResults.length > 0 ? (
-                <div className="mt-4 p-4 bg-white rounded-[10px]">
-                  <h3 className="text-lg text-black mb-2">Search Results</h3>
-                  <div className="w-full h-[1px] bg-[#808080]"></div>
-                  <div className="space-y-2">
+               <div className="mt-4 bg-white rounded-[10px] shadow-md">
+              <h3 className="text-lg text-black p-3">Search Results</h3>
+              <div className="w-full h-[1px] bg-[#bcb8b8] mb-1"></div>
+              <div className="px-6 py-5 w-full">
+                  <div className="space-y-4">
                     {searchResults.map((item, index) => (
                       <label key={index} className="flex items-center">
                         <input
                           type="radio"
+                          value={item.id}
                           name="nutrition"
-                          className="mr-2"
+                          className="mr-3"
                           onChange={() => handleItemSelect(item.id)}
                         />
                         <span className="text-black">{item.id} ({item.longName})</span>
@@ -150,6 +152,7 @@ const NutritionInformation = () => {
                     ))}
                   </div>
                 </div>
+              </div>
               ) : (
                 <div className="mt-4 p-4 bg-white rounded-[10px]">
                   <h3 className="text-lg text-black mb-2">Search Results</h3>
@@ -160,69 +163,67 @@ const NutritionInformation = () => {
             )}
 
             {/* Nutrition Details - shown only in details view */}
-            {/* {viewState === 'details' && nutritionDetails && ( */}
+            {viewState === 'details' && nutritionDetails && (
             <div className="mt-4 bg-white rounded-[10px] shadow-md">
               <h3 className="text-lg text-black p-3">Nutrition Info</h3>
               <div className="w-full h-[1px] bg-[#bcb8b8] mb-1"></div>
 
-              <div className="px-4 py-1">
-                <h4 className="text-md text-gray-700 mb-2">Hersheys Special Dark (1.45oz)</h4>
-                <h5 className="text-md text-black mb-2">Nutrition Facts</h5>
+              <div className="px-6 py-1 w-full lg:w-[70%] 2xl:w-[35%]">
+                <h4 className="text-lg font-bold text-black mb-2">Hersheys Special Dark (1.45oz)</h4>
+                <h5 className="text-lg font-bold text-black mb-2">Nutrition Facts</h5>
 
-                <div className="w-full h-[1px] bg-[#808080] my-2"></div>
-
-                <div className="space-y-2 text-black text-sm w-full md:w-[50%] 2xl:w-[35%]">
-                  <div className="flex justify-between">
-                    <p><strong>Calories</strong> 190</p>
-                  </div>
-                  <div className="flex justify-between">
-                    <p><strong>Calories From Fat</strong> 110</p>
-                  </div>
-
-                  <div className="w-full h-[1px] bg-[#808080] my-2"></div>
-
-                  <div className="grid grid-cols-[70%_30%]">
-                    <p className="font-semibold"></p>
-                    <p className="font-normal">% Daily Value</p>
-                  </div>
-
-                  <div className="grid grid-cols-[70%_30%]">
-                    <p><strong>Total Fat</strong> 12g</p>
-                    <p>0%</p>
-                  </div>
-                  <div className="grid grid-cols-[70%_30%] pl-4">
-                    <p><strong>Saturated Fat</strong> 8g</p>
-                    <p>0%</p>
-                  </div>
-                  <div className="grid grid-cols-[70%_30%] pl-4">
-                    <p><strong>Trans Fat</strong> 0g</p>
-                    <p>–</p>
-                  </div>
-                  <div className="grid grid-cols-[70%_30%]">
-                    <p><strong>Cholesterol</strong> 5mg</p>
-                    <p>0%</p>
-                  </div>
-                  <div className="grid grid-cols-[70%_30%]">
-                    <p><strong>Sodium</strong> 15mg</p>
-                    <p>0%</p>
-                  </div>
-                  <div className="grid grid-cols-[70%_30%]">
-                    <p><strong>Total Carbohydrate</strong> 25g</p>
-                    <p>0%</p>
-                  </div>
-                  <div className="grid grid-cols-[70%_30%] pl-4">
-                    <p><strong>Dietary Fiber</strong> 3g</p>
-                    <p>0%</p>
-                  </div>
-                  <div className="grid grid-cols-[70%_30%] pl-4">
-                    <p><strong>Sugars</strong> 21g</p>
-                    <p>–</p>
-                  </div>
-                  <div className="grid grid-cols-[70%_30%]">
-                    <p><strong>Protein</strong> 2g</p>
-                    <p>0%</p>
-                  </div>
+                <div className="w-full  h-[1px] bg-[#808080] my-2"></div>
+                <div className="flex text-black justify-between">
+                  <p><strong>Calories</strong> 190</p>
                 </div>
+                <div className="flex text-black justify-between">
+                  <p><strong>Calories From Fat</strong> 110</p>
+                </div>
+                <div className="w-full  h-[1px] bg-[#808080] my-2"></div>
+                <table className="w-full text-black">
+                  <tbody>
+                    <tr>
+                      <td></td>
+                      <td><small>% Daily Value</small></td>
+                    </tr>
+                    <tr>
+                      <td className="textred="><b>Total Fat</b> 12g</td>
+                      <td>0%</td>
+                    </tr>
+                    <tr>
+                      <td><b>&nbsp;&nbsp;&nbsp;&nbsp;Saturated Fat</b> 8g</td>
+                      <td>0%</td>
+                    </tr>
+                    <tr>
+                      <td><b>&nbsp;&nbsp;&nbsp;&nbsp;Trans Fat</b> 0g</td>
+                      <td>-</td>
+                    </tr>
+                    <tr>
+                      <td><b>Cholesterol</b> 5mg</td>
+                      <td>0%</td>
+                    </tr>
+                    <tr>
+                      <td><b>Sodium</b> 15mg</td>
+                      <td>0%</td>
+                    </tr>
+                    <tr>
+                      <td><b>Total Carbohydrate</b> 25g</td>
+                      <td>0%</td>
+                    </tr>
+                    <tr>
+                      <td><b>&nbsp;&nbsp;&nbsp;&nbsp;Dietary Fiber</b> 3g</td>
+                      <td>0%</td>
+                    </tr>
+                    <tr>
+                      <td><b>&nbsp;&nbsp;&nbsp;&nbsp;Sugars</b> 21g</td>
+                      <td>-</td>
+                    </tr>
+                    <tr>
+                      <td><b>Protein</b> 2g</td>
+                      <td>0%</td>
+                    </tr>
+                  </tbody>
+                </table>
 
                 <div className="w-full h-[1px] bg-[#808080] my-4"></div>
 
@@ -230,13 +231,12 @@ const NutritionInformation = () => {
                   <img
                     src="https://www.bvfpulse.com/prod/asset.server/Imageserver.aspx?assetKey=IVENDPRODUCT|6516.gif"
                     alt="Hershey's Special Dark"
-                    className="w-32"
+                    className="w-62 h-62"
                   />
                 </div>
               </div>
             </div>
-
-            {/* )} */}
+           )} 
           </div>
         </div>
       </div>

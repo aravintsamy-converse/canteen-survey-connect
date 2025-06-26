@@ -43,7 +43,7 @@ const Layout: React.FC = () => {
         </div>
       </header>
 
-      <main className="flex-grow bg-[#4D4D4D] text-white">
+      <main className="min-h-[calc(100vh-116px)] bg-[#4D4D4D] text-white">
         <Outlet />
       </main>
       {/* Common Footer */}
