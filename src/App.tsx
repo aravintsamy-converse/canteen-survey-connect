@@ -6,6 +6,7 @@ import Refund from './pages/Refund';
 import PageNotFound from './pages/PageNotFound';
 import Layout from './component/Layout';
 import { EquipmentIdProvider, useEqpId } from './EquipmentIdContext';
+import NutritionInformation from './pages/NutritionInformation';
 
 const GuidExtractor: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -29,6 +30,7 @@ function App() {
         <Route path="/survey/home/:id" element={<GuidExtractor />} />
             <Route path="/survey/machine-problem" element={<MachineProblem />} />
             <Route path="/survey/need-refund" element={<Refund />} />
+            <Route path="/survey/nutrition-information" element={<NutritionInformation />} />
             <Route path="/" element={<Navigate to="/survey/home" replace />} />
             <Route path="*" element={<PageNotFound />} />
           </Route>

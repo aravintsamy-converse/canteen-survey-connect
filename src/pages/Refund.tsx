@@ -408,7 +408,7 @@ const Refund = () => {
       <SuccessModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        message="Your machine issue case has been created."
+        message="Your refund request has been submitted."
         errorMessage={apiError}
       />
     </div>

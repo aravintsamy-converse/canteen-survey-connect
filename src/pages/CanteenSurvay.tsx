@@ -80,6 +80,18 @@ const CanteenSurvay: React.FC = () => {
             <span className="font-[700] text-[16px]">Need a Refund?</span>
             <FaChevronCircleRight className="text-[22px] text-[#4D4D4D]" />
           </Link>
+          <div className="border-t border-black"></div>
+          <Link
+            to="/survey/nutrition-information"
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavigation('/survey/nutrition-information');
+            }}
+            className="w-full px-3 py-3 text-left flex justify-between items-center link-item"
+          >
+            <span className="font-[700] text-[16px]">Nutrition Information</span>
+            <FaChevronCircleRight className="text-[22px] text-[#4D4D4D]" />
+          </Link>
         </div>
       </div>
     </div>
